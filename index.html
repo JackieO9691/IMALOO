@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e4f6ec">
+<meta name="description" content="IMALOO: snap your toys, pick a magical world, and watch your own movie.">
+<title>IMALOO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800&family=Nunito:wght@600;800&display=swap">
+<style>
+/* Layout: one-screen storybook app, chunky toy-like buttons, a 16:9 movie stage at the heart of every screen.
+   Deliberately single-theme (sunny meadow) so the movie colours read the same for every child. */
+:root {
+  --meadow: #e4f6ec;
+  --paper: #ffffff;
+  --ink: #17324a;
+  --ink-soft: #4b6478;
+  --sun: #ffc83d;
+  --sun-deep: #d99a00;
+  --berry: #ff5d8f;
+  --berry-deep: #c93466;
+  --leaf: #2fb380;
+  --leaf-deep: #1d8a5f;
+  --line: #c9e6d6;
+  --display: "Grandstander", "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
+  --body: "Nunito", "Trebuchet MS", system-ui, sans-serif;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  background: var(--meadow);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 18px;
+  padding-inline: 16px;
+  padding-block: 12px 32px;
+  -webkit-tap-highlight-color: transparent;
+  margin: 0;
+}
+.app { max-width: 760px; margin: 0 auto; display: grid; gap: 18px; }
+h1, h2 { font-family: var(--display); margin: 0; text-wrap: balance; line-height: 1.1; }
+h2 { font-size: clamp(26px, 6vw, 36px); }
+p { margin: 0; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.logo { font-family: var(--display); font-weight: 800; font-size: 30px; letter-spacing: 0.04em; color: var(--berry); display: flex; align-items: center; gap: 8px; background: none; border: 0; padding: 0; cursor: pointer; }
+.logo svg { width: 34px; height: 34px; }
+.meaning { color: var(--ink-soft); font-size: 15px; }
+
+.btn {
+  font-family: var(--display); font-weight: 800; font-size: 22px;
+  border: 0; border-radius: 22px; padding: 16px 22px; min-height: 64px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  cursor: pointer; color: var(--ink); background: var(--paper);
+  box-shadow: 0 6px 0 var(--line);
+  transition: transform .08s ease, box-shadow .08s ease;
+}
+.btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--line); }
+.btn:focus-visible, .tile:focus-visible, .world:focus-visible, .chip:focus-visible, .logo:focus-visible { outline: 4px solid var(--berry); outline-offset: 3px; }
+.btn svg { width: 30px; height: 30px; flex: none; }
+.btn.sun { background: var(--sun); box-shadow: 0 6px 0 var(--sun-deep); }
+.btn.sun:active { box-shadow: 0 2px 0 var(--sun-deep); }
+.btn.berry { background: var(--berry); color: #fff; box-shadow: 0 6px 0 var(--berry-deep); }
+.btn.berry:active { box-shadow: 0 2px 0 var(--berry-deep); }
+.btn.leaf { background: var(--leaf); color: #fff; box-shadow: 0 6px 0 var(--leaf-deep); }
+.btn.leaf:active { box-shadow: 0 2px 0 var(--leaf-deep); }
+.btn[disabled] { opacity: .45; cursor: default; transform: none; }
+.btn.small { font-size: 16px; min-height: 48px; padding: 10px 16px; border-radius: 16px; }
+.btn.big { font-size: 28px; min-height: 84px; width: 100%; }
+.row { display: flex; flex-wrap: wrap; gap: 14px; }
+.row > .btn { flex: 1 1 200px; }
+
+.stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 26px; overflow: hidden; background: #0b1440; box-shadow: 0 8px 0 var(--line); }
+.stage canvas { width: 100%; height: 100%; display: block; }
+.stage:fullscreen { border-radius: 0; box-shadow: none; background: #000; display: grid; place-items: center; }
+.stage:fullscreen canvas { width: 100%; height: auto; max-height: 100%; aspect-ratio: 16 / 9; }
+.playover { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10, 20, 50, .25); border: 0; cursor: pointer; }
+.playover span { width: 110px; height: 110px; border-radius: 50%; background: var(--sun); display: grid; place-items: center; box-shadow: 0 6px 0 var(--sun-deep); }
+.playover svg { width: 54px; height: 54px; margin-left: 8px; }
+.progress { height: 14px; border-radius: 7px; background: var(--paper); overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--leaf); border-radius: 7px; }
+
+.hint { display: flex; gap: 10px; align-items: center; color: var(--ink-soft); font-size: 16px; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.tile {
+  position: relative; background: var(--paper); border: 4px solid transparent; border-radius: 24px;
+  padding: 12px; display: grid; gap: 6px; justify-items: center; cursor: pointer;
+  font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--ink);
+  box-shadow: 0 6px 0 var(--line);
+}
+.tile img { width: 110px; height: 110px; object-fit: cover; }
+.tile img.photo { border-radius: 50%; border: 5px solid var(--paper); box-shadow: 0 0 0 3px var(--line); }
+.tile[aria-pressed="true"] { border-color: var(--berry); }
+.tile .badge { position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; border-radius: 50%; background: var(--berry); color: #fff; display: none; place-items: center; font-size: 22px; }
+.tile[aria-pressed="true"] .badge { display: grid; }
+.tile.camera { background: var(--sun); box-shadow: 0 6px 0 var(--sun-deep); align-content: center; min-height: 170px; }
+.tile.camera svg { width: 64px; height: 64px; }
+.tile .remove { position: absolute; top: -10px; left: -10px; width: 36px; height: 36px; border-radius: 50%; font: 800 18px var(--body); line-height: 1; color: var(--ink-soft); background: var(--paper); border: 3px solid var(--line); cursor: pointer; padding: 0; }
+input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.worlds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.world { border: 0; padding: 0; background: var(--paper); border-radius: 24px; overflow: hidden; cursor: pointer; text-align: left; box-shadow: 0 6px 0 var(--line); color: var(--ink); }
+.world canvas { width: 100%; aspect-ratio: 16 / 9; display: block; }
+.world b { display: block; font-family: var(--display); font-size: 24px; padding: 10px 16px 2px; }
+.world small { display: block; font-size: 16px; color: var(--ink-soft); padding: 0 16px 14px; }
+
+.sheet { background: var(--paper); border-radius: 26px; padding: 20px; display: grid; gap: 16px; box-shadow: 0 6px 0 var(--line); }
+.sheet img { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; justify-self: center; border: 6px solid var(--paper); box-shadow: 0 0 0 4px var(--berry); }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { font-family: var(--display); font-weight: 800; font-size: 20px; border: 3px solid var(--line); background: var(--paper); border-radius: 999px; padding: 8px 18px; cursor: pointer; color: var(--ink); }
+.chip[aria-pressed="true"] { border-color: var(--berry); background: #ffe6ef; }
+.name-in { font: 800 24px var(--display); border: 3px solid var(--line); border-radius: 18px; padding: 12px 16px; width: 100%; color: var(--ink); background: var(--paper); }
+.name-in:focus { outline: 4px solid var(--berry); outline-offset: 2px; }
+
+.lib { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 16px; }
+.empty { background: var(--paper); border-radius: 24px; padding: 28px; text-align: center; display: grid; gap: 14px; justify-items: center; }
+
+.grownups { display: grid; gap: 14px; background: var(--paper); border-radius: 24px; padding: 20px; font-size: 16px; }
+.grownups h2 { font-size: 26px; }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 800; }
+.toggle input { width: 28px; height: 28px; accent-color: var(--leaf); }
+.hold { position: relative; overflow: hidden; }
+.hold::after { content: ""; position: absolute; left: 0; bottom: 0; height: 5px; width: var(--held, 0%); background: var(--berry); }
+.note { background: var(--meadow); border-radius: 16px; padding: 12px 14px; color: var(--ink-soft); }
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; padding: 14px 22px; border-radius: 18px; font: 800 18px var(--display); z-index: 9; max-width: calc(100% - 32px); text-align: center; }
+.tvsheet { display: grid; gap: 10px; }
+
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <button class="logo" id="logo" aria-label="IMALOO home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l4.6 10.2L35 14.6l-7.9 7.2 2.2 11L20 27.3l-9.3 5.5 2.2-11L5 14.6l10.4-1.4z" fill="#ffc83d" stroke="#d99a00" stroke-width="2" stroke-linejoin="round"/></svg>
+      IMALOO
+    </button>
+    <button class="btn small hold" id="grownBtn" aria-label="Grown-ups: press and hold">Grown-ups</button>
+  </header>
+
+  <!-- HOME -->
+  <section id="home" class="app">
+    <div class="stage"><canvas id="heroCanvas" width="960" height="540" aria-label="Sample movie: Teddy rides Pony through the fairy forest"></canvas></div>
+    <p class="meaning">Imagination + a magical world. Snap your toys, pick a world, and watch your own movie.</p>
+    <button class="btn sun big" id="startBtn">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 27L21 11" stroke="#17324a" stroke-width="4" stroke-linecap="round"/><path d="M23 3l1.5 3.5L28 8l-3.5 1.5L23 13l-1.5-3.5L18 8l3.5-1.5z" fill="#ff5d8f"/></svg>
+      Make a movie
+    </button>
+    <button class="btn" id="libBtn">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="7" width="26" height="18" rx="4" fill="#2fb380"/><path d="M13 12v8l7-4z" fill="#fff"/></svg>
+      <span id="libLabel">My movies</span>
+    </button>
+  </section>
+
+  <!-- TOY BOX -->
+  <section id="toys" class="app" hidden>
+    <h2>Who's in your movie?</h2>
+    <p class="hint">Take a photo of a toy, or tap a friend. Pick up to 3.</p>
+    <div class="grid" id="toyGrid"></div>
+    <input type="file" id="photoIn" accept="image/*" capture="environment">
+    <div class="row">
+      <button class="btn" id="toysBack">Back</button>
+      <button class="btn berry" id="toysNext" disabled>Next</button>
+    </div>
+  </section>
+
+  <!-- NAME A NEW TOY -->
+  <section id="naming" class="app" hidden>
+    <div class="sheet">
+      <img id="nameImg" alt="Your toy photo">
+      <h2>What's their name?</h2>
+      <div class="chips" id="nameChips"></div>
+      <label for="nameIn" class="hint">Or type a name</label>
+      <input id="nameIn" class="name-in" maxlength="14" autocomplete="off" placeholder="Name">
+      <div class="row">
+        <button class="btn" id="nameCancel">Cancel</button>
+        <button class="btn berry" id="nameDone">Add to my toys</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORLDS -->
+  <section id="worlds" class="app" hidden>
+    <h2>Where should they go?</h2>
+    <div class="worlds" id="worldGrid"></div>
+    <button class="btn" id="worldsBack">Back</button>
+  </section>
+
+  <!-- MOVIE -->
+  <section id="movie" class="app" hidden>
+    <div class="stage" id="movieStage">
+      <canvas id="movieCanvas" width="960" height="540"></canvas>
+      <button class="playover" id="playOver" aria-label="Play movie" hidden><span><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4l20 12L8 28z" fill="#17324a"/></svg></span></button>
+    </div>
+    <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+    <div class="row">
+      <button class="btn sun" id="playBtn" aria-label="Pause">
+        <svg viewBox="0 0 32 32" aria-hidden="true" id="playIco"><rect x="7" y="5" width="6" height="22" rx="2" fill="#17324a"/><rect x="19" y="5" width="6" height="22" rx="2" fill="#17324a"/></svg>
+        <span id="playTxt">Pause</span>
+      </button>
+      <button class="btn leaf" id="tvBtn">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="6" width="26" height="17" rx="3" fill="none" stroke="#fff" stroke-width="3"/><path d="M11 28h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+        Watch on TV
+      </button>
+    </div>
+    <div class="row">
+      <button class="btn berry" id="saveBtn">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l4 8.5 9.3 1.2-6.8 6.4 1.7 9.2L16 23.8l-8.2 4.5 1.7-9.2-6.8-6.4 9.3-1.2z" fill="#fff"/></svg>
+        Keep this movie
+      </button>
+      <button class="btn" id="againBtn">Make another</button>
+    </div>
+    <div class="sheet tvsheet" id="tvSheet" hidden>
+      <h2>On the big TV</h2>
+      <p>The movie is now full screen. In the finished IMALOO app this button sends the movie straight to your TV with AirPlay or Chromecast.</p>
+      <button class="btn small" id="tvClose">OK</button>
+    </div>
+  </section>
+
+  <!-- LIBRARY -->
+  <section id="library" class="app" hidden>
+    <h2>My movies</h2>
+    <div class="lib" id="libGrid"></div>
+    <button class="btn" id="libBack">Home</button>
+  </section>
+
+  <!-- GROWN-UPS -->
+  <section id="grown" class="app" hidden>
+    <div class="grownups">
+      <h2>For grown-ups</h2>
+      <p>This is a clickable prototype of IMALOO. Photos stay on this device; nothing is uploaded.</p>
+      <label class="toggle" for="optVoice">Read the story out loud <input type="checkbox" id="optVoice" checked></label>
+      <label class="toggle" for="optMusic">Play music <input type="checkbox" id="optMusic" checked></label>
+      <div class="note">In the full app a grown-up approves every movie before it can be played on the TV, and all stories and pictures pass a child-safety check.</div>
+      <div class="row">
+        <button class="btn small" id="clearBtn">Delete saved movies and photos</button>
+      </div>
+      <div class="row" id="clearConfirm" hidden>
+        <button class="btn small berry" id="clearYes">Yes, delete them</button>
+        <button class="btn small" id="clearNo">Keep them</button>
+      </div>
+      <button class="btn" id="grownBack">Done</button>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+const W = 960, H = 540;
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+};
+const opts = { voice: store.get('imaloo.voice', true), music: store.get('imaloo.music', true) };
+
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const lerp = (a, b, p) => a + (b - a) * p;
+const ease = p => p < 0 ? 0 : p > 1 ? 1 : 1 - Math.pow(1 - p, 3);
+
+/* ---------- built-in toys, drawn once ---------- */
+function ell(c, x, y, rx, ry, col, rot) { c.beginPath(); c.ellipse(x, y, rx, ry, rot || 0, 0, Math.PI * 2); c.fillStyle = col; c.fill(); }
+const ART = {
+  teddy(c) {
+    const b = '#b8763e', l = '#e9b47c', d = '#3a2314';
+    ell(c, 92, 66, 36, 36, b); ell(c, 208, 66, 36, 36, b); ell(c, 92, 66, 18, 18, l); ell(c, 208, 66, 18, 18, l);
+    ell(c, 72, 200, 24, 44, b, 0.5); ell(c, 228, 200, 24, 44, b, -0.5);
+    ell(c, 110, 270, 34, 26, b); ell(c, 190, 270, 34, 26, b); ell(c, 110, 274, 18, 14, l); ell(c, 190, 274, 18, 14, l);
+    ell(c, 150, 210, 78, 72, b); ell(c, 150, 222, 46, 44, l);
+    ell(c, 150, 108, 72, 66, b); ell(c, 150, 132, 34, 26, l);
+    ell(c, 150, 120, 11, 8, d); ell(c, 124, 96, 8, 9, d); ell(c, 176, 96, 8, 9, d);
+    ell(c, 127, 93, 2.5, 2.5, '#fff'); ell(c, 179, 93, 2.5, 2.5, '#fff');
+    c.beginPath(); c.arc(150, 130, 13, 0.2 * Math.PI, 0.8 * Math.PI); c.strokeStyle = d; c.lineWidth = 4; c.lineCap = 'round'; c.stroke();
+    ell(c, 150, 182, 22, 10, '#ff5d8f'); ell(c, 132, 182, 12, 12, '#ff5d8f'); ell(c, 168, 182, 12, 12, '#ff5d8f');
+  },
+  dolly(c) {
+    const hair = '#f2b93b', skin = '#ffd9b8', dress = '#ff6fa3', d = '#3a2a3f';
+    ell(c, 84, 112, 26, 30, hair); ell(c, 216, 112, 26, 30, hair);
+    c.fillStyle = skin; c.fillRect(124, 262, 16, 28); c.fillRect(160, 262, 16, 28);
+    ell(c, 132, 292, 16, 8, '#7a4cff'); ell(c, 168, 292, 16, 8, '#7a4cff');
+    c.strokeStyle = skin; c.lineWidth = 14; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(118, 170); c.lineTo(84, 220); c.moveTo(182, 170); c.lineTo(216, 220); c.stroke();
+    c.beginPath(); c.moveTo(120, 152); c.lineTo(180, 152); c.lineTo(226, 270); c.lineTo(74, 270); c.closePath(); c.fillStyle = dress; c.fill();
+    for (let i = 0; i < 6; i++) ell(c, 96 + i * 22, 262, 6, 6, '#fff');
+    ell(c, 150, 100, 64, 64, hair);
+    ell(c, 150, 108, 52, 52, skin);
+    c.beginPath(); c.ellipse(150, 72, 56, 30, 0, Math.PI, 0); c.fillStyle = hair; c.fill();
+    ell(c, 130, 108, 7, 8, d); ell(c, 170, 108, 7, 8, d); ell(c, 132, 105, 2.5, 2.5, '#fff'); ell(c, 172, 105, 2.5, 2.5, '#fff');
+    ell(c, 118, 126, 9, 6, '#ffb0c4'); ell(c, 182, 126, 9, 6, '#ffb0c4');
+    c.beginPath(); c.arc(150, 126, 12, 0.15 * Math.PI, 0.85 * Math.PI); c.strokeStyle = d; c.lineWidth = 4; c.stroke();
+    ell(c, 150, 46, 18, 12, '#ff5d8f');
+  },
+  pony(c) {
+    const body = '#c9b6ff', mane = '#ff8fc7', d = '#2d2350';
+    c.fillStyle = body;
+    [80, 112, 178, 210].forEach(x => { c.fillRect(x, 196, 22, 76); });
+    c.fillStyle = '#8f78e8'; [80, 112, 178, 210].forEach(x => { c.fillRect(x, 262, 22, 14); });
+    for (let i = 0; i < 4; i++) ell(c, 46 - i * 6, 160 + i * 22, 18, 20, mane);
+    ell(c, 145, 182, 96, 56, body);
+    c.beginPath(); c.moveTo(196, 170); c.lineTo(228, 92); c.lineTo(262, 110); c.lineTo(232, 190); c.closePath(); c.fill();
+    ell(c, 248, 96, 38, 30, body, 0.35);
+    c.beginPath(); c.moveTo(232, 64); c.lineTo(226, 30); c.lineTo(244, 62); c.fillStyle = body; c.fill();
+    c.beginPath(); c.moveTo(250, 68); c.lineTo(266, 22); c.lineTo(264, 72); c.closePath(); c.fillStyle = '#ffc83d'; c.fill();
+    for (let i = 0; i < 5; i++) ell(c, 222 - i * 8, 70 + i * 24, 16, 16, mane);
+    ell(c, 252, 90, 6, 7, d); ell(c, 254, 87, 2, 2, '#fff'); ell(c, 278, 110, 3, 3, d);
+    ell(c, 130, 166, 14, 10, '#ffe08a', 0.3); ell(c, 156, 160, 9, 7, '#ffe08a', -0.3);
+  }
+};
+function artURL(kind) { const cv = document.createElement('canvas'); cv.width = cv.height = 300; ART[kind](cv.getContext('2d')); return cv.toDataURL('image/png'); }
+const SAMPLE = [
+  { id: 'art-teddy', name: 'Teddy', kind: 'art', art: 'teddy' },
+  { id: 'art-pony', name: 'Pony', kind: 'art', art: 'pony' },
+  { id: 'art-dolly', name: 'Dolly', kind: 'art', art: 'dolly' }
+];
+SAMPLE.forEach(t => { t.src = artURL(t.art); });
+function loadImg(src) { const i = new Image(); i.src = src; return i; }
+function hydrate(t) { return Object.assign({}, t, { img: loadImg(t.src) }); }
+
+/* ---------- painting helpers ---------- */
+function star(c, x, y, r, col) { c.beginPath(); for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * 0.45 : r; c.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } c.closePath(); c.fillStyle = col; c.fill(); }
+function cloud(c, x, y, s) { c.fillStyle = 'rgba(255,255,255,.92)'; [[0, 0, 34], [32, -14, 40], [70, 0, 32], [36, 10, 36]].forEach(([dx, dy, r]) => { c.beginPath(); c.arc(x + dx * s, y + dy * s, r * s, 0, Math.PI * 2); c.fill(); }); }
+function butterfly(c, x, y, T, ph, col) {
+  const f = Math.abs(Math.sin(T * 11 + ph)) * 0.8 + 0.2;
+  c.save(); c.translate(x, y); c.rotate(Math.sin(T * 2 + ph) * 0.3);
+  c.fillStyle = col; c.globalAlpha = .9;
+  c.beginPath(); c.ellipse(-9 * f, -5, 11 * f, 13, -0.4, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.ellipse(9 * f, -5, 11 * f, 13, 0.4, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.ellipse(-7 * f, 9, 7 * f, 8, 0.3, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.ellipse(7 * f, 9, 7 * f, 8, -0.3, 0, Math.PI * 2); c.fill();
+  c.globalAlpha = 1; c.fillStyle = '#2d2350'; c.fillRect(-2, -12, 4, 26);
+  c.restore();
+}
+function fairy(c, x, y, T, ph) {
+  c.save(); c.translate(x, y);
+  const g = c.createRadialGradient(0, 0, 2, 0, 0, 34); g.addColorStop(0, 'rgba(255,250,200,.9)'); g.addColorStop(1, 'rgba(255,250,200,0)');
+  c.fillStyle = g; c.beginPath(); c.arc(0, 0, 34, 0, Math.PI * 2); c.fill();
+  const f = Math.abs(Math.sin(T * 14 + ph));
+  c.fillStyle = 'rgba(200,240,255,.75)';
+  c.beginPath(); c.ellipse(-10, -6, 12, 6 + 6 * f, -0.6, 0, Math.PI * 2); c.fill();
+  c.beginPath(); c.ellipse(10, -6, 12, 6 + 6 * f, 0.6, 0, Math.PI * 2); c.fill();
+  c.fillStyle = '#ff8fc7'; c.beginPath(); c.moveTo(-6, 0); c.lineTo(6, 0); c.lineTo(9, 16); c.lineTo(-9, 16); c.fill();
+  c.fillStyle = '#ffe2c4'; c.beginPath(); c.arc(0, -6, 6, 0, Math.PI * 2); c.fill();
+  c.restore();
+}
+function flower(c, x, y, h, col, T) {
+  const sx = x + Math.sin(T * 1.6 + x * 0.05) * 6;
+  c.strokeStyle = '#3f9c3a'; c.lineWidth = 4; c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x, y - h / 2, sx, y - h); c.stroke();
+  c.fillStyle = '#4fb446'; c.beginPath(); c.ellipse(x + 8, y - h * 0.4, 10, 5, -0.5, 0, Math.PI * 2); c.fill();
+  c.fillStyle = col;
+  for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + T * 0.4; c.beginPath(); c.arc(sx + Math.cos(a) * 11, y - h + Math.sin(a) * 11, 9, 0, Math.PI * 2); c.fill(); }
+  c.fillStyle = '#ffd23d'; c.beginPath(); c.arc(sx, y - h, 8, 0, Math.PI * 2); c.fill();
+}
+function mushroom(c, x, y, s, T) {
+  c.save(); c.shadowColor = 'rgba(255,120,170,.9)'; c.shadowBlur = 18 + Math.sin(T * 2 + x) * 8;
+  c.fillStyle = '#fff3e0'; c.fillRect(x - 7 * s, y - 22 * s, 14 * s, 22 * s);
+  c.fillStyle = '#ff5d8f'; c.beginPath(); c.ellipse(x, y - 22 * s, 24 * s, 16 * s, 0, Math.PI, 0); c.fill();
+  c.restore();
+  c.fillStyle = '#fff'; [[-10, -28], [4, -32], [12, -25]].forEach(([dx, dy]) => { c.beginPath(); c.arc(x + dx * s, y + dy * s, 3 * s, 0, Math.PI * 2); c.fill(); });
+}
+
+/* ---------- the four worlds ---------- */
+const WORLDS = {
+  garden: {
+    name: 'Flower Garden', blurb: 'Sunshine, flowers and butterflies', ground: 452,
+    notes: [523, 659, 784, 659, 587, 698, 880, 698],
+    init(r) { return {
+      back: Array.from({ length: 22 }, (_, i) => ({ x: 20 + i * 44 + r() * 20, h: 60 + r() * 50, col: ['#ff5d8f', '#ffffff', '#b07cff', '#ff9a3d'][i % 4] })),
+      front: Array.from({ length: 9 }, (_, i) => ({ x: 30 + i * 110 + r() * 40, h: 40 + r() * 30, col: ['#ff5d8f', '#b07cff', '#ff9a3d'][i % 3] })),
+      flies: Array.from({ length: 5 }, () => ({ x: 120 + r() * 720, y: 160 + r() * 160, ph: r() * 9, col: ['#ff9a3d', '#6ec6ff', '#ffd23d', '#ff7fbf'][Math.floor(r() * 4)] })),
+      petals: Array.from({ length: 14 }, () => ({ x: r() * W, y: r() * H, s: 0.5 + r() }))
+    }; },
+    bg(c, T, d) {
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#7fd3ff'); g.addColorStop(1, '#e8fbff'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.save(); c.translate(830, 92); c.rotate(T * 0.2); c.fillStyle = '#ffe680'; for (let i = 0; i < 12; i++) { c.rotate(Math.PI / 6); c.fillRect(56, -5, 26, 10); } c.restore();
+      c.fillStyle = '#ffd23d'; c.beginPath(); c.arc(830, 92, 50, 0, Math.PI * 2); c.fill();
+      [[80, 90, 1], [420, 60, .8], [700, 150, .7]].forEach(([x, y, s]) => cloud(c, ((x + T * 14) % 1180) - 110, y, s));
+      c.fillStyle = '#9fdc76'; c.beginPath(); c.ellipse(250, 470, 420, 150, 0, Math.PI, 0); c.fill();
+      c.fillStyle = '#86d063'; c.beginPath(); c.ellipse(780, 480, 420, 150, 0, Math.PI, 0); c.fill();
+      d.back.forEach(f => flower(c, f.x, 440, f.h, f.col, T));
+      c.fillStyle = '#62b84a'; c.fillRect(0, 440, W, 100);
+      c.fillStyle = '#c9a26b'; c.beginPath(); c.ellipse(480, 520, 520, 60, 0, Math.PI, 0); c.fill();
+    },
+    front(c, T, d) {
+      d.front.forEach(f => flower(c, f.x, 545, f.h, f.col, T));
+      d.flies.forEach(b => butterfly(c, b.x + Math.sin(T * 0.6 + b.ph) * 130, b.y + Math.sin(T * 1.3 + b.ph) * 40, T, b.ph, b.col));
+      c.fillStyle = 'rgba(255,170,200,.8)'; d.petals.forEach(p => { const y = (p.y + T * 30 * p.s) % H, x = (p.x + Math.sin(T + p.y) * 20); c.beginPath(); c.ellipse(x, y, 5 * p.s, 3 * p.s, T + p.x, 0, Math.PI * 2); c.fill(); });
+    },
+    lines: [
+      n => `${n.A} skipped into the flower garden on a sunny morning.`,
+      n => `${n.all} danced between the tall, wobbly flowers.`,
+      n => n.B ? `A butterfly called, "Follow me!" so ${n.A} hopped on ${n.B} and off they raced!` : `A butterfly called, "Follow me!" and ${n.A} zoomed down the flower path!`,
+      n => `When the sun went down, ${n.all} waved goodnight. The End!`
+    ]
+  },
+  forest: {
+    name: 'Fairy Forest', blurb: 'Fairies, butterflies and glowing mushrooms', ground: 456,
+    notes: [440, 554, 659, 880, 659, 554, 494, 587],
+    init(r) { return {
+      trees: Array.from({ length: 7 }, (_, i) => ({ x: i * 150 + r() * 60, w: 34 + r() * 20, h: 300 + r() * 80 })),
+      shrooms: Array.from({ length: 7 }, () => ({ x: r() * W, s: 0.7 + r() * 0.6 })),
+      flies: Array.from({ length: 30 }, () => ({ x: r() * W, y: 120 + r() * 320, ph: r() * 9 })),
+      fairies: Array.from({ length: 3 }, (_, i) => ({ cx: 200 + i * 280, cy: 150 + r() * 80, ph: r() * 9 })),
+      bflies: Array.from({ length: 3 }, () => ({ x: 120 + r() * 720, y: 220 + r() * 120, ph: r() * 9, col: ['#8fe3ff', '#d9a6ff', '#ffe08a'][Math.floor(r() * 3)] }))
+    }; },
+    bg(c, T, d) {
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1f3f63'); g.addColorStop(1, '#4a9a86'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.fillStyle = '#fff6c9'; c.beginPath(); c.arc(760, 80, 38, 0, Math.PI * 2); c.fill();
+      c.fillStyle = '#1f3f63'; c.beginPath(); c.arc(776, 70, 34, 0, Math.PI * 2); c.fill();
+      d.trees.forEach(t => {
+        c.fillStyle = '#4b3424'; c.fillRect(t.x, 470 - t.h, t.w, t.h);
+        c.fillStyle = '#2c6b4f'; [[0, 0, 80], [-50, 40, 60], [55, 35, 62]].forEach(([dx, dy, rr]) => { c.beginPath(); c.arc(t.x + t.w / 2 + dx, 470 - t.h + dy, rr, 0, Math.PI * 2); c.fill(); });
+      });
+      c.fillStyle = '#2e6e48'; c.fillRect(0, 450, W, 90);
+      c.fillStyle = '#3d8a58'; c.beginPath(); c.ellipse(480, 540, 560, 70, 0, Math.PI, 0); c.fill();
+      d.shrooms.forEach(m => mushroom(c, m.x, 470 + m.s * 20, m.s, T));
+    },
+    front(c, T, d) {
+      d.flies.forEach(f => { c.fillStyle = `rgba(255,240,140,${0.35 + 0.65 * Math.abs(Math.sin(T * 2 + f.ph))})`; c.beginPath(); c.arc(f.x + Math.sin(T * 0.5 + f.ph) * 20, f.y + Math.cos(T * 0.7 + f.ph) * 14, 3, 0, Math.PI * 2); c.fill(); });
+      d.bflies.forEach(b => butterfly(c, b.x + Math.sin(T * 0.6 + b.ph) * 120, b.y + Math.sin(T * 1.2 + b.ph) * 50, T, b.ph, b.col));
+      d.fairies.forEach(f => fairy(c, f.cx + Math.sin(T * 0.8 + f.ph) * 110, f.cy + Math.sin(T * 1.6 + f.ph) * 40, T, f.ph));
+    },
+    lines: [
+      n => `Deep in the magical forest, ${n.A} heard tiny silver bells.`,
+      n => `Fairies and butterflies came out to play with ${n.all}.`,
+      n => n.B ? `${n.A} rode ${n.B} past the glowing mushrooms, faster and faster!` : `${n.A} raced past the glowing mushrooms, faster and faster!`,
+      n => `The fairies sprinkled stardust, and ${n.all} floated home. The End!`
+    ]
+  },
+  space: {
+    name: 'Bedroom to Space', blurb: 'Your room blasts off past the stars', ground: 0, float: true,
+    notes: [392, 523, 587, 784, 698, 587, 523, 440],
+    init(r) { return {
+      stars: Array.from({ length: 130 }, () => ({ x: r() * W, y: r() * H, s: 0.5 + r() * 1.8, ph: r() * 9 })),
+      dust: Array.from({ length: 24 }, () => ({ x: r() * W, y: r() * H, s: 1 + r() * 2 }))
+    }; },
+    bg(c, T, d) {
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0b1440'); g.addColorStop(1, '#2a1f66'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      d.stars.forEach(s => { c.fillStyle = `rgba(255,255,255,${0.4 + 0.6 * Math.abs(Math.sin(T * 1.5 + s.ph))})`; c.fillRect(s.x, s.y, s.s, s.s); });
+      c.fillStyle = '#ff9a3d'; c.beginPath(); c.arc(770, 150, 62, 0, Math.PI * 2); c.fill();
+      c.fillStyle = '#ffc07a'; c.beginPath(); c.arc(750, 132, 18, 0, Math.PI * 2); c.fill();
+      c.strokeStyle = '#ffe08a'; c.lineWidth = 8; c.beginPath(); c.ellipse(770, 150, 110, 24, -0.3, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = '#6ec6ff'; c.beginPath(); c.arc(140, 110, 30, 0, Math.PI * 2); c.fill();
+      c.fillStyle = '#3fa96b'; c.beginPath(); c.arc(130, 104, 12, 0, Math.PI * 2); c.fill();
+      const sx = ((T * 160) % 1600) - 300; c.strokeStyle = 'rgba(255,255,255,.8)'; c.lineWidth = 3; c.beginPath(); c.moveTo(sx, 60 + sx * 0.12); c.lineTo(sx - 70, 60 + (sx - 70) * 0.12); c.stroke();
+      // the bed, now a rocket
+      c.save(); c.translate(140, 455 + Math.sin(T * 2) * 6);
+      c.fillStyle = '#ff8c2e'; c.beginPath(); c.moveTo(0, 24); c.lineTo(-30, 12); c.lineTo(0, 0); c.fill();
+      const fl = 18 + Math.abs(Math.sin(T * 20)) * 16; c.fillStyle = '#ffd23d'; c.beginPath(); c.moveTo(0, 20); c.lineTo(-fl, 12); c.lineTo(0, 4); c.fill();
+      c.fillStyle = '#6e4bd8'; c.fillRect(0, -10, 150, 34); c.fillStyle = '#ffffff'; c.fillRect(8, -24, 44, 18); c.fillStyle = '#9fdcff'; c.fillRect(56, -18, 90, 10);
+      c.fillStyle = '#4a2fa8'; c.fillRect(140, -40, 12, 64);
+      c.restore();
+    },
+    front(c, T, d) { c.fillStyle = 'rgba(200,220,255,.6)'; d.dust.forEach(p => { const x = (p.x - T * 60 * p.s % W + W) % W; c.fillRect(x, p.y, p.s * 3, 1.5); }); },
+    lines: [
+      n => `${n.A}'s bedroom began to rumble. The bed was a rocket!`,
+      n => `${n.all} floated past the twinkly stars and giggled.`,
+      n => n.B ? `${n.A} rode ${n.B} all the way around the ringed planet!` : `${n.A} looped all the way around the ringed planet!`,
+      n => `Back home, the stars whispered goodnight to ${n.all}. The End!`
+    ]
+  },
+  castle: {
+    name: 'Bedroom Castle', blurb: 'Towers, flags and a rainbow bridge', ground: 458,
+    notes: [587, 740, 880, 740, 659, 784, 988, 784],
+    init(r) { return { sparks: Array.from({ length: 26 }, () => ({ x: r() * W, y: 40 + r() * 380, ph: r() * 9 })) }; },
+    bg(c, T, d) {
+      const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#ffc6e0'); g.addColorStop(1, '#fff1cf'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      ['#ff6b6b', '#ffa94d', '#ffd43b', '#69db7c', '#4dabf7', '#9775fa'].forEach((col, i) => { c.strokeStyle = col; c.lineWidth = 14; c.globalAlpha = .55; c.beginPath(); c.arc(220, 470, 230 - i * 14, Math.PI, 0); c.stroke(); });
+      c.globalAlpha = 1;
+      const cx = 640;
+      c.fillStyle = '#f4e3ff'; c.fillRect(cx - 120, 220, 240, 240);
+      [[cx - 170, 170, 70, 290], [cx + 100, 170, 70, 290], [cx - 30, 120, 60, 120]].forEach(([x, y, w, h]) => {
+        c.fillStyle = '#ead3ff'; c.fillRect(x, y, w, h);
+        c.fillStyle = '#b07cff'; c.beginPath(); c.moveTo(x - 10, y); c.lineTo(x + w / 2, y - 70); c.lineTo(x + w + 10, y); c.fill();
+        const fx = x + w / 2, fy = y - 70; c.strokeStyle = '#6b4a8a'; c.lineWidth = 3; c.beginPath(); c.moveTo(fx, fy); c.lineTo(fx, fy - 36); c.stroke();
+        c.fillStyle = '#ff5d8f'; c.beginPath(); c.moveTo(fx, fy - 36); c.quadraticCurveTo(fx + 18, fy - 34 + Math.sin(T * 4 + x) * 5, fx + 34, fy - 28); c.lineTo(fx, fy - 20); c.fill();
+        c.fillStyle = '#ffe08a'; c.fillRect(x + w / 2 - 9, y + 40, 18, 26);
+      });
+      for (let i = 0; i < 6; i++) { c.fillStyle = '#f4e3ff'; c.fillRect(cx - 120 + i * 44, 204, 26, 18); }
+      c.fillStyle = '#8a5ac2'; c.beginPath(); c.moveTo(cx - 40, 460); c.lineTo(cx - 40, 380); c.arc(cx, 380, 40, Math.PI, 0); c.lineTo(cx + 40, 460); c.fill();
+      c.fillStyle = '#f7c6dc'; c.fillRect(0, 456, W, 84);
+      for (let x = 0; x < W; x += 60) { c.fillStyle = (x / 60) % 2 ? '#f9d8e7' : '#f2b6cf'; c.fillRect(x, 490, 60, 50); }
+    },
+    front(c, T, d) { d.sparks.forEach(s => { const a = Math.abs(Math.sin(T * 2 + s.ph)); c.globalAlpha = a; star(c, s.x, s.y, 4 + a * 6, '#ffd23d'); }); c.globalAlpha = 1; },
+    lines: [
+      n => `With a sparkle and a pop, the bedroom turned into a castle for ${n.A}!`,
+      n => `${n.all} danced in the great castle hall.`,
+      n => n.B ? `${n.A} rode ${n.B} over the rainbow bridge!` : `${n.A} slid down the rainbow bridge, wheee!`,
+      n => `The castle gave ${n.all} a golden star for being so brave. The End!`
+    ]
+  }
+};
+const WORLD_ORDER = ['garden', 'forest', 'space', 'castle'];
+const ACTIONS = ['enter', 'dance', 'ride', 'wave'];
+const SHOT = 7.5;
+
+function joinNames(names) { return names.length < 2 ? names[0] : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1]; }
+
+/* ---------- music ---------- */
+const Music = {
+  ctx: null, timer: null,
+  start(notes) {
+    this.stop();
+    if (!opts.music) return;
+    try {
+      this.ctx = this.ctx || new (window.AudioContext || window.webkitAudioContext)();
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+    } catch (e) { return; }
+    let i = 0;
+    const tick = () => {
+      const c = this.ctx, t = c.currentTime, o = c.createOscillator(), g = c.createGain();
+      o.type = 'triangle'; o.frequency.value = notes[i % notes.length] * (i % 16 < 8 ? 1 : 0.75);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.05, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.5);
+      o.connect(g).connect(c.destination); o.start(t); o.stop(t + 0.55); i++;
+    };
+    tick(); this.timer = setInterval(tick, 340);
+  },
+  stop() { clearInterval(this.timer); this.timer = null; }
+};
+function say(text) {
+  try { speechSynthesis.cancel(); if (!opts.voice || !text) return; const u = new SpeechSynthesisUtterance(text); u.rate = 0.92; u.pitch = 1.15; speechSynthesis.speak(u); } catch (e) {}
+}
+function hush() { try { speechSynthesis.cancel(); } catch (e) {} }
+
+/* ---------- the movie player ---------- */
+class Player {
+  constructor(canvas, o) { this.cv = canvas; this.c = canvas.getContext('2d'); this.o = o || {}; this.t = 0; this.playing = false; this.raf = 0; this.last = 0; this.shot = -1; }
+  load(worldId, toys) {
+    this.wid = worldId; this.w = WORLDS[worldId]; this.toys = toys; this.d = this.w.init(rng(7));
+    const names = toys.map(t => t.name);
+    const n = { A: names[0], B: names[1], all: joinNames(names) };
+    this.lines = this.w.lines.map(f => f(n));
+    this.t = 0; this.shot = -1; this.render(); return this;
+  }
+  get length() { return SHOT * 4; }
+  play() {
+    if (this.t >= this.length) { this.t = 0; this.shot = -1; }
+    this.playing = true; this.last = performance.now();
+    if (this.o.sound) Music.start(this.w.notes);
+    cancelAnimationFrame(this.raf); const loop = now => { this.step(now); if (this.playing) this.raf = requestAnimationFrame(loop); }; this.raf = requestAnimationFrame(loop);
+    this.o.onState && this.o.onState(true);
+  }
+  pause() { this.playing = false; cancelAnimationFrame(this.raf); if (this.o.sound) { Music.stop(); hush(); } this.o.onState && this.o.onState(false); }
+  step(now) {
+    const dt = Math.min(0.1, (now - this.last) / 1000); this.last = now; this.t += dt;
+    if (this.t >= this.length) {
+      if (this.o.loop) { this.t = 0; this.shot = -1; }
+      else { this.t = this.length; this.render(); this.pause(); this.o.onEnd && this.o.onEnd(); return; }
+    }
+    const s = Math.floor(this.t / SHOT);
+    if (s !== this.shot) { this.shot = s; if (this.o.sound) say(this.lines[s]); }
+    this.render();
+  }
+  renderAt(t) { this.t = t; this.render(); }
+  render() {
+    const c = this.c, T = this.t, w = this.w, d = this.d;
+    const s = Math.min(3, Math.floor(T / SHOT)), p = (T - s * SHOT) / SHOT, act = ACTIONS[s];
+    c.save(); c.clearRect(0, 0, W, H);
+    w.bg(c, T, d);
+    this.drawToys(c, act, p, T);
+    w.front(c, T, d);
+    if (act === 'wave' && p > 0.4) this.theEnd(c, ease((p - 0.4) * 3), T);
+    if (this.o.captions !== false) this.caption(c, this.lines[s]);
+    c.restore();
+    this.o.onTime && this.o.onTime(T / this.length);
+  }
+  toyAt(i, n, act, p, T) {
+    const size = n > 2 ? 132 : 150, gap = n > 2 ? 210 : 260;
+    const homeX = W / 2 + (i - (n - 1) / 2) * gap;
+    const fl = this.w.float, base = fl ? 330 + Math.sin(T * 1.4 + i * 1.7) * 26 : this.w.ground - size / 2;
+    let x = homeX, y = base, rot = fl ? Math.sin(T * 0.9 + i) * 0.15 : 0, flip = false, sz = size;
+    if (act === 'enter') {
+      const q = ease(Math.min(1, p * 1.7 - i * 0.15));
+      x = lerp(-200 - i * 140, homeX, q);
+      if (q < 1 && !fl) y = base - Math.abs(Math.sin(T * 9 + i)) * 22;
+    } else if (act === 'dance') {
+      x = homeX + Math.sin(T * 2.6 + i * 2) * 24;
+      y = base - Math.abs(Math.sin(T * 5 + i)) * 46;
+      rot = Math.sin(T * 4 + i) * 0.22;
+      flip = Math.sin(T * 1.3 + i) < 0;
+    } else if (act === 'ride') {
+      const runX = lerp(-220, W + 220, p);
+      const gallop = fl ? 0 : Math.abs(Math.sin(T * 7)) * 18;
+      if (n >= 2 && i === 1) { x = runX; y = base - gallop; rot = fl ? 0.1 : Math.sin(T * 7) * 0.06; }
+      else if (i === 0) {
+        if (n >= 2) { x = runX - 6; y = base - gallop - size * 0.55; sz = size * 0.8; rot = -0.08; }
+        else { x = runX; y = base - gallop - 20; rot = -0.15; }
+      } else { y = base - Math.abs(Math.sin(T * 6 + i)) * 30; flip = runX < homeX; }
+    } else if (act === 'wave') {
+      rot = Math.sin(T * 3 + i) * 0.18;
+      y = base - Math.abs(Math.sin(T * 2.5 + i)) * 12;
+    }
+    return { x, y, rot, flip, sz };
+  }
+  drawToys(c, act, p, T) {
+    const n = this.toys.length;
+    const order = act === 'ride' && n >= 2 ? [...this.toys.keys()].filter(i => i > 1).concat([1, 0]) : [...this.toys.keys()];
+    if (act === 'ride') {
+      const lead = this.toyAt(n >= 2 ? 1 : 0, n, act, p, T);
+      for (let k = 1; k < 9; k++) { c.globalAlpha = 1 - k / 9; star(c, lead.x - k * 26, lead.y + 30 + Math.sin(T * 8 + k) * 10, 7, '#ffd23d'); }
+      c.globalAlpha = 1;
+    }
+    order.forEach(i => {
+      const t = this.toys[i], q = this.toyAt(i, n, act, p, T);
+      if (!this.w.float && !(act === 'ride' && i === 0 && n >= 2)) { c.fillStyle = 'rgba(0,0,0,.16)'; c.beginPath(); c.ellipse(q.x, this.w.ground + 4, q.sz * 0.36, 10, 0, 0, Math.PI * 2); c.fill(); }
+      c.save(); c.translate(q.x, q.y); c.rotate(q.rot); if (q.flip) c.scale(-1, 1);
+      const r = q.sz / 2;
+      if (t.kind === 'photo') {
+        c.fillStyle = '#fff'; c.beginPath(); c.arc(0, 0, r + 7, 0, Math.PI * 2); c.fill();
+        c.save(); c.beginPath(); c.arc(0, 0, r, 0, Math.PI * 2); c.clip();
+        if (t.img.complete && t.img.naturalWidth) c.drawImage(t.img, -r, -r, q.sz, q.sz); else { c.fillStyle = '#ddd'; c.fillRect(-r, -r, q.sz, q.sz); }
+        c.restore();
+      } else if (t.img.complete && t.img.naturalWidth) { c.drawImage(t.img, -r, -r, q.sz, q.sz); }
+      c.restore();
+    });
+  }
+  theEnd(c, a, T) {
+    c.save(); c.globalAlpha = a; c.textAlign = 'center';
+    c.font = '800 84px Grandstander, "Comic Sans MS", sans-serif';
+    c.lineWidth = 12; c.strokeStyle = '#17324a'; c.strokeText('The End', W / 2, 230);
+    c.fillStyle = '#ffc83d'; c.fillText('The End', W / 2, 230);
+    for (let i = 0; i < 10; i++) { const ang = i / 10 * Math.PI * 2 + T; star(c, W / 2 + Math.cos(ang) * 230 * a, 200 + Math.sin(ang) * 90 * a, 12, i % 2 ? '#ff5d8f' : '#ffd23d'); }
+    c.restore();
+  }
+  caption(c, text) {
+    if (!text) return;
+    c.save(); c.font = '800 30px Grandstander, "Comic Sans MS", sans-serif';
+    const words = text.split(' '), lines = []; let line = '';
+    words.forEach(wd => { const tst = line ? line + ' ' + wd : wd; if (c.measureText(tst).width > 840) { lines.push(line); line = wd; } else line = tst; });
+    lines.push(line);
+    const h = 26 + lines.length * 38;
+    c.fillStyle = 'rgba(255,255,255,.88)'; c.beginPath(); c.roundRect(40, 18, W - 80, h, 22); c.fill();
+    c.fillStyle = '#17324a'; c.textAlign = 'center';
+    lines.forEach((l, i) => c.fillText(l, W / 2, 18 + 44 + i * 38));
+    c.restore();
+  }
+}
+
+/* ---------- app state ---------- */
+let myToys = store.get('imaloo.toys', []).map(hydrate);
+let chosen = [];
+let pendingPhoto = null;
+let current = null; // { world, toys }
+let saved = store.get('imaloo.movies', []);
+const allToys = () => SAMPLE.map(hydrate).concat(myToys);
+function findToy(id) { return allToys().find(t => t.id === id); }
+
+const screens = ['home', 'toys', 'naming', 'worlds', 'movie', 'library', 'grown'];
+let hero = null, movie = null;
+function show(id) {
+  screens.forEach(s => { $(s).hidden = s !== id; });
+  if (hero) { id === 'home' ? hero.play() : hero.pause(); }
+  if (id !== 'movie' && movie) movie.pause();
+  if (id === 'toys') drawToyGrid();
+  if (id === 'library') drawLibrary();
+  if (id === 'home') $('libLabel').textContent = saved.length ? `My movies (${saved.length})` : 'My movies';
+  window.scrollTo(0, 0);
+}
+function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; t.setAttribute('role', 'status'); document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+
+/* home hero: a looping silent sample movie */
+hero = new Player($('heroCanvas'), { loop: true, sound: false });
+hero.load('forest', [hydrate(SAMPLE[0]), hydrate(SAMPLE[1])]);
+
+/* toy box */
+function drawToyGrid() {
+  const g = $('toyGrid'); g.innerHTML = '';
+  const cam = document.createElement('label'); cam.className = 'tile camera'; cam.htmlFor = 'photoIn'; cam.tabIndex = 0;
+  cam.innerHTML = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="16" width="52" height="38" rx="10" fill="#17324a"/><rect x="22" y="9" width="20" height="10" rx="4" fill="#17324a"/><circle cx="32" cy="35" r="12" fill="#ffc83d"/><circle cx="32" cy="35" r="6" fill="#17324a"/></svg><span>Take a photo</span>';
+  cam.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('photoIn').click(); } });
+  g.appendChild(cam);
+  allToys().forEach(t => {
+    const b = document.createElement('button'); b.className = 'tile'; b.type = 'button';
+    const idx = chosen.indexOf(t.id);
+    b.setAttribute('aria-pressed', idx >= 0 ? 'true' : 'false');
+    b.innerHTML = `<span class="badge">${idx + 1}</span><img class="${t.kind === 'photo' ? 'photo' : ''}" alt="" src="${t.src}"><span></span>`;
+    b.lastChild.textContent = t.name;
+    b.addEventListener('click', () => {
+      const k = chosen.indexOf(t.id);
+      if (k >= 0) chosen.splice(k, 1); else if (chosen.length < 3) chosen.push(t.id); else { toast('3 friends is the most!'); return; }
+      drawToyGrid();
+    });
+    g.appendChild(b);
+    if (t.kind === 'photo') {
+      const rm = document.createElement('button'); rm.className = 'remove'; rm.type = 'button'; rm.textContent = '\u00d7';
+      rm.setAttribute('aria-label', 'Remove ' + t.name);
+      rm.addEventListener('click', e => { e.stopPropagation(); myToys = myToys.filter(x => x.id !== t.id); chosen = chosen.filter(x => x !== t.id); saveToys(); drawToyGrid(); });
+      b.appendChild(rm);
+    }
+  });
+  $('toysNext').disabled = chosen.length === 0;
+}
+function saveToys() { if (!store.set('imaloo.toys', myToys.map(({ img, ...t }) => t))) toast('This photo will only stay until you close the page'); }
+
+$('photoIn').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = '';
+  if (!f) return;
+  const url = URL.createObjectURL(f), im = new Image();
+  im.onload = () => {
+    const cv = document.createElement('canvas'), S = 320; cv.width = cv.height = S;
+    const m = Math.min(im.naturalWidth, im.naturalHeight);
+    cv.getContext('2d').drawImage(im, (im.naturalWidth - m) / 2, (im.naturalHeight - m) / 2, m, m, 0, 0, S, S);
+    pendingPhoto = cv.toDataURL('image/jpeg', 0.82); URL.revokeObjectURL(url);
+    $('nameImg').src = pendingPhoto; $('nameIn').value = '';
+    const chips = $('nameChips'); chips.innerHTML = '';
+    ['Teddy', 'Bunny', 'Dolly', 'Pony', 'Dino', 'Kitty', 'Puppy', 'Unicorn'].forEach(nm => {
+      const c = document.createElement('button'); c.className = 'chip'; c.type = 'button'; c.textContent = nm; c.setAttribute('aria-pressed', 'false');
+      c.addEventListener('click', () => { $('nameIn').value = nm; chips.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x === c ? 'true' : 'false')); });
+      chips.appendChild(c);
+    });
+    show('naming');
+  };
+  im.onerror = () => { toast("That picture didn't open. Try another photo."); URL.revokeObjectURL(url); };
+  im.src = url;
+});
+$('nameDone').addEventListener('click', () => {
+  const nm = ($('nameIn').value || '').trim() || 'My Toy';
+  const t = { id: 'p' + Date.now(), name: nm.slice(0, 14), kind: 'photo', src: pendingPhoto };
+  myToys.push(hydrate(t)); saveToys();
+  if (chosen.length < 3) chosen.push(t.id);
+  show('toys'); toast(`${t.name} is ready for an adventure!`);
+});
+$('nameCancel').addEventListener('click', () => show('toys'));
+
+/* worlds */
+function drawWorlds() {
+  const g = $('worldGrid'); g.innerHTML = '';
+  WORLD_ORDER.forEach(id => {
+    const w = WORLDS[id], b = document.createElement('button'); b.className = 'world'; b.type = 'button';
+    const cv = document.createElement('canvas'); cv.width = 480; cv.height = 270;
+    b.appendChild(cv);
+    const nb = document.createElement('b'); nb.textContent = w.name; b.appendChild(nb);
+    const sm = document.createElement('small'); sm.textContent = w.blurb; b.appendChild(sm);
+    const ctx = cv.getContext('2d'); ctx.scale(0.5, 0.5); const d = w.init(rng(7)); w.bg(ctx, 2, d); w.front(ctx, 2, d);
+    b.addEventListener('click', () => startMovie(id, chosen.map(findToy).filter(Boolean)));
+    g.appendChild(b);
+  });
+}
+
+/* movie */
+function setPlayUI(on) {
+  $('playTxt').textContent = on ? 'Pause' : 'Play';
+  $('playBtn').setAttribute('aria-label', on ? 'Pause' : 'Play');
+  $('playIco').innerHTML = on ? '<rect x="7" y="5" width="6" height="22" rx="2" fill="#17324a"/><rect x="19" y="5" width="6" height="22" rx="2" fill="#17324a"/>' : '<path d="M8 4l20 12L8 28z" fill="#17324a"/>';
+  $('playOver').hidden = on;
+}
+movie = new Player($('movieCanvas'), {
+  sound: true,
+  onState: setPlayUI,
+  onTime: f => { $('prog').style.width = (f * 100).toFixed(1) + '%'; },
+  onEnd: () => { Music.stop(); }
+});
+function startMovie(world, toys) {
+  if (!toys.length) return;
+  current = { world, toys };
+  $('tvSheet').hidden = true;
+  show('movie');
+  movie.load(world, toys);
+  $('movieCanvas').setAttribute('aria-label', `Movie: ${movie.lines.join(' ')}`);
+  $('saveBtn').disabled = false;
+  movie.play();
+}
+$('playBtn').addEventListener('click', () => movie.playing ? movie.pause() : movie.play());
+$('playOver').addEventListener('click', () => movie.play());
+$('tvBtn').addEventListener('click', async () => {
+  const st = $('movieStage');
+  try { if (st.requestFullscreen) await st.requestFullscreen(); else if (st.webkitRequestFullscreen) st.webkitRequestFullscreen(); } catch (e) {}
+  if (!movie.playing) movie.play();
+  $('tvSheet').hidden = false;
+});
+$('tvClose').addEventListener('click', () => { $('tvSheet').hidden = true; });
+$('saveBtn').addEventListener('click', () => {
+  if (!current) return;
+  saved.unshift({ id: 'm' + Date.now(), world: current.world, toys: current.toys.map(({ img, ...t }) => t), at: Date.now() });
+  saved = saved.slice(0, 24);
+  toast(store.set('imaloo.movies', saved) ? 'Saved to My movies!' : 'Saved until you close the page');
+  $('saveBtn').disabled = true;
+});
+$('againBtn').addEventListener('click', () => { movie.pause(); show('toys'); });
+
+/* library */
+function drawLibrary() {
+  const g = $('libGrid'); g.innerHTML = '';
+  if (!saved.length) {
+    g.innerHTML = '<div class="empty"><h2>No movies yet</h2><p>Make your first movie and tap Keep this movie to save it here.</p></div>';
+    const b = document.createElement('button'); b.className = 'btn sun'; b.textContent = 'Make a movie'; b.addEventListener('click', () => show('toys')); g.firstChild.appendChild(b);
+    return;
+  }
+  saved.forEach(m => {
+    const toys = m.toys.map(hydrate), w = WORLDS[m.world];
+    const b = document.createElement('button'); b.className = 'world'; b.type = 'button';
+    const cv = document.createElement('canvas'); cv.width = 960; cv.height = 540; b.appendChild(cv);
+    const nb = document.createElement('b'); nb.textContent = `${joinNames(toys.map(t => t.name))} in the ${w.name}`; b.appendChild(nb);
+    const sm = document.createElement('small'); sm.textContent = new Date(m.at).toLocaleDateString(undefined, { day: 'numeric', month: 'long' }); b.appendChild(sm);
+    const pl = new Player(cv, { captions: false }).load(m.world, toys);
+    const paint = () => pl.renderAt(SHOT * 3 + 2);
+    toys.forEach(t => { t.img.onload = paint; }); paint();
+    b.addEventListener('click', () => startMovie(m.world, toys));
+    g.appendChild(b);
+  });
+}
+
+/* grown-ups: press and hold so little fingers don't open it by accident */
+(() => {
+  const b = $('grownBtn'); let t0 = 0, raf = 0;
+  const stop = () => { cancelAnimationFrame(raf); b.style.setProperty('--held', '0%'); t0 = 0; };
+  const tick = () => { const f = (performance.now() - t0) / 1500; b.style.setProperty('--held', Math.min(100, f * 100) + '%'); if (f >= 1) { stop(); show('grown'); } else raf = requestAnimationFrame(tick); };
+  const start = e => { e.preventDefault(); t0 = performance.now(); raf = requestAnimationFrame(tick); };
+  b.addEventListener('pointerdown', start); b.addEventListener('pointerup', stop); b.addEventListener('pointerleave', stop); b.addEventListener('pointercancel', stop);
+  b.addEventListener('click', () => { if (!t0) toast('Grown-ups: press and hold'); });
+  b.addEventListener('keydown', e => { if (e.key === 'Enter' && e.repeat) show('grown'); });
+})();
+$('optVoice').checked = opts.voice; $('optMusic').checked = opts.music;
+$('optVoice').addEventListener('change', e => { opts.voice = e.target.checked; store.set('imaloo.voice', opts.voice); if (!opts.voice) hush(); });
+$('optMusic').addEventListener('change', e => { opts.music = e.target.checked; store.set('imaloo.music', opts.music); if (!opts.music) Music.stop(); });
+$('clearBtn').addEventListener('click', () => { $('clearConfirm').hidden = false; });
+$('clearNo').addEventListener('click', () => { $('clearConfirm').hidden = true; });
+$('clearYes').addEventListener('click', () => {
+  saved = []; myToys = []; chosen = chosen.filter(id => id.startsWith('art-'));
+  store.set('imaloo.movies', []); store.set('imaloo.toys', []);
+  $('clearConfirm').hidden = true; toast('Deleted');
+});
+$('grownBack').addEventListener('click', () => show('home'));
+
+/* navigation */
+$('logo').addEventListener('click', () => show('home'));
+$('startBtn').addEventListener('click', () => show('toys'));
+$('libBtn').addEventListener('click', () => show('library'));
+$('toysBack').addEventListener('click', () => show('home'));
+$('toysNext').addEventListener('click', () => { drawWorlds(); show('worlds'); });
+$('worldsBack').addEventListener('click', () => show('toys'));
+$('libBack').addEventListener('click', () => show('home'));
+
+const boot = () => { show('home'); };
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(boot);
+hero.render();
+})();
+</script>
+</body>
+</html>
