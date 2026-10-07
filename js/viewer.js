@@ -207,7 +207,7 @@ export class WorldViewer {
     t.style.left = x * 100 + '%'; t.style.top = y * 100 + '%';
     t.style.height = h + 'px'; t.style.zIndex = 5;
     t.style.setProperty('--face', this.facing);
-    const from = this.L.lighting.from || 0, back = this.L.lighting.backlit;
+    const from = Math.max(-60, Math.min(60, this.L.lighting.from || 0)), back = this.L.lighting.backlit;
     this.el.cast.style.transform = back ? `scaleY(-0.32) skewX(${-from}deg)` : `scaleY(0.34) skewX(${from}deg)`;
     // Foreground pieces cover the toy only when the toy stands behind them.
     this.el.fg.querySelectorAll('g').forEach(g => { g.style.display = y < +g.dataset.baseY ? '' : 'none'; });

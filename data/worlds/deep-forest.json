@@ -28,123 +28,103 @@
       ],
       "surface": "dirt",
       "lighting": {
-        "from": -35,
-        "warmth": 0.12,
-        "shadow": 0.5
+        "from": 10,
+        "warmth": 0.2,
+        "shadow": 0.45,
+        "backlit": true
       },
       "ground": {
-        "horizon": 0.47,
-        "nearScale": 0.34
+        "horizon": 0.66,
+        "nearScale": 0.4
       },
       "walk": [
         [
-          0.08,
+          0.03,
           0.98
         ],
         [
-          0.3,
+          0.2,
+          0.8
+        ],
+        [
+          0.38,
+          0.72
+        ],
+        [
+          0.46,
           0.7
         ],
         [
-          0.44,
-          0.58
+          0.54,
+          0.7
         ],
         [
-          0.47,
-          0.5
+          0.62,
+          0.72
         ],
         [
-          0.53,
-          0.5
+          0.8,
+          0.78
         ],
         [
-          0.6,
-          0.58
-        ],
-        [
-          0.75,
-          0.65
-        ],
-        [
-          0.95,
+          0.97,
           0.98
         ]
       ],
       "spawn": [
-        0.5,
-        0.86
+        0.45,
+        0.88
       ],
-      "foreground": [
-        {
-          "polygon": [
-            [
-              0.88,
-              0.66
-            ],
-            [
-              0.93,
-              0.7
-            ],
-            [
-              1,
-              0.72
-            ],
-            [
-              1,
-              0.98
-            ],
-            [
-              0.95,
-              0.98
-            ],
-            [
-              0.86,
-              0.75
-            ]
-          ],
-          "baseY": 0.98
-        }
-      ],
+      "foreground": [],
       "nav": [
         {
           "to": "creek",
-          "x": 0.24,
-          "y": 0.62
+          "x": 0.2,
+          "y": 0.7
         },
         {
           "to": "giant-tree",
           "x": 0.5,
-          "y": 0.47
+          "y": 0.64
         }
       ],
       "interactions": [
         {
-          "id": "log",
-          "x": 0.74,
-          "y": 0.78,
-          "kind": "jump",
-          "story": "{name} jumped right over a mossy log!"
+          "id": "toadstools",
+          "x": 0.64,
+          "y": 0.69,
+          "kind": "wonder",
+          "fx": "sparkle",
+          "story": "{name} found a ring of spotty red toadstools. Maybe fairies live here!"
         },
         {
-          "id": "rock",
-          "x": 0.2,
-          "y": 0.9,
-          "kind": "sit",
-          "story": "{name} sat on a cool, smooth rock for a rest."
+          "id": "flowers",
+          "x": 0.86,
+          "y": 0.76,
+          "kind": "smell",
+          "story": "{name} smelled the pink forest flowers. Mmm, sweet!"
+        },
+        {
+          "id": "lantern",
+          "x": 0.7,
+          "y": 0.46,
+          "kind": "lights",
+          "fx": "sparkle",
+          "story": "{name} made the little lantern glow brighter!"
         }
       ],
       "discoveries": [
         {
           "id": "footprints",
-          "x": 0.62,
-          "y": 0.74,
+          "x": 0.7,
+          "y": 0.82,
           "item": "footprints",
           "story": "{name} found little wombat footprints in the dirt!"
         },
         {
           "id": "feather",
-          "x": 0.36,
-          "y": 0.92,
+          "x": 0.32,
+          "y": 0.9,
           "item": "feather",
           "story": "{name} found a soft, spotted feather."
         }
@@ -178,7 +158,7 @@
             0.8,
             0.35
           ],
-          "n": 2
+          "n": 4
         }
       ],
       "sound": "forest"

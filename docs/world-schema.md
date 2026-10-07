@@ -34,7 +34,7 @@ Pictures are 16:9; each has a full image (about 1920px) and a `-sm.jpg` (640px) 
 | `image`, `imageSm` | Hero photo and small preview |
 | `tone` | Placeholder colours |
 | `surface` | `grass`, `sand`, `dirt`, `snow`, `floor`, `water`: sets footprints and sounds |
-| `lighting` | `from` (sun direction in degrees, 0 = from the right, 90 = overhead), `warmth` (-1 cool to 1 warm), `shadow` (0–1 strength), `backlit` |
+| `lighting` | `from` (how far the shadow leans, in degrees from -60 to 60; 0 = straight back, or straight towards the viewer when `backlit`), `warmth` (-1 cool to 1 warm), `shadow` (0–1 strength), `backlit` |
 | `defaultTime` | Optional time this place opens at |
 | `ground` | `horizon` (y of the horizon) and `nearScale` (toy height as a share of picture height at the bottom edge). The toy shrinks towards the horizon. |
 | `walk` | Polygon `[[x,y],…]` of safe ground. Taps outside are moved to the nearest edge. |
