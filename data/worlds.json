@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "worlds": [
+    { "id": "park", "name": "Neighbourhood Park", "thumb": "worlds/thumbs/park.jpg", "tone": ["#8fbf6a", "#cfe3a8"] },
+    { "id": "deep-forest", "name": "Deep Forest", "thumb": "worlds/thumbs/deep-forest.jpg", "tone": ["#2f5a3a", "#9cc28a"], "data": "data/worlds/deep-forest.json" },
+    { "id": "aus-beach", "name": "Australian Beach", "thumb": "worlds/thumbs/aus-beach.jpg", "tone": ["#e9cf98", "#7fc6e0"], "data": "data/worlds/aus-beach.json" },
+    { "id": "cubby", "name": "Backyard Cubby House", "thumb": "worlds/thumbs/cubby.jpg", "tone": ["#a57b52", "#9fcf7a"], "data": "data/worlds/cubby.json" },
+    { "id": "garden", "name": "Backyard Garden", "thumb": "worlds/thumbs/garden.jpg", "tone": ["#6fa85a", "#f2c3c9"] },
+    { "id": "camping", "name": "Camping Ground", "thumb": "worlds/thumbs/camping.jpg", "tone": ["#3e5a46", "#e8a35a"] },
+    { "id": "aus-bush", "name": "Australian Bush", "thumb": "worlds/thumbs/aus-bush.jpg", "tone": ["#9a8a5c", "#d8c48e"] },
+    { "id": "rainforest", "name": "Rainforest", "thumb": "worlds/thumbs/rainforest.jpg", "tone": ["#1f4d34", "#6fae7a"] },
+    { "id": "farm", "name": "Country Farm", "thumb": "worlds/thumbs/farm.jpg", "tone": ["#c9a45c", "#9ccf7c"] },
+    { "id": "mountain", "name": "Mountain Adventure", "thumb": "worlds/thumbs/mountain.jpg", "tone": ["#5f6f86", "#c9d6e6"] },
+    { "id": "snow", "name": "Snow World", "thumb": "worlds/thumbs/snow.jpg", "tone": ["#cfdbe8", "#ffffff"] },
+    { "id": "space", "name": "Outer Space", "thumb": "worlds/thumbs/space.jpg", "tone": ["#0b1230", "#3a4c8a"] },
+    { "id": "ocean", "name": "Underwater Ocean", "thumb": "worlds/thumbs/ocean.jpg", "tone": ["#0d4f6e", "#4fb5c9"] },
+    { "id": "rock-pools", "name": "Rock Pools", "thumb": "worlds/thumbs/rock-pools.jpg", "tone": ["#6b6a5e", "#7fb9c4"] },
+    { "id": "bedroom", "name": "Child's Bedroom", "thumb": "worlds/thumbs/bedroom.jpg", "tone": ["#c9b7a4", "#f0dccb"] },
+    { "id": "home", "name": "Family Home", "thumb": "worlds/thumbs/home.jpg", "tone": ["#b49a7e", "#efe2cf"] },
+    { "id": "castle", "name": "Realistic Castle", "thumb": "worlds/thumbs/castle.jpg", "tone": ["#7d7a72", "#c8c2b4"] },
+    { "id": "pirate-island", "name": "Pirate Island", "thumb": "worlds/thumbs/pirate-island.jpg", "tone": ["#e3c98f", "#3aa3b8"] },
+    { "id": "dino-valley", "name": "Prehistoric Dinosaur Valley", "thumb": "worlds/thumbs/dino-valley.jpg", "tone": ["#5f7a3e", "#c7b57a"] },
+    { "id": "safari", "name": "Wildlife Safari", "thumb": "worlds/thumbs/safari.jpg", "tone": ["#c8a45e", "#e7d3a1"] },
+    { "id": "little-town", "name": "Little Town", "thumb": "worlds/thumbs/little-town.jpg", "tone": ["#a8806a", "#d9c6b2"] },
+    { "id": "fire-station", "name": "Fire Station", "thumb": "worlds/thumbs/fire-station.jpg", "tone": ["#b23a2e", "#e9c2a6"] },
+    { "id": "construction", "name": "Construction Site", "thumb": "worlds/thumbs/construction.jpg", "tone": ["#d9a52e", "#8a7a62"] },
+    { "id": "carnival", "name": "Carnival", "thumb": "worlds/thumbs/carnival.jpg", "tone": ["#c94a6a", "#f2c94c"] },
+    { "id": "train", "name": "Train Adventure", "thumb": "worlds/thumbs/train.jpg", "tone": ["#5a4a3e", "#b9a184"] },
+    { "id": "secret-island", "name": "Secret Island", "thumb": "worlds/thumbs/secret-island.jpg", "tone": ["#2f7a6a", "#e9d8a6"] },
+    { "id": "night-backyard", "name": "Night-Time Backyard", "thumb": "worlds/thumbs/night-backyard.jpg", "tone": ["#141b33", "#4a5a8a"] }
+  ]
+}

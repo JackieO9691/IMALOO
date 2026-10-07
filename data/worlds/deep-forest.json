@@ -1,0 +1,127 @@
+{
+  "id": "deep-forest",
+  "name": "Deep Forest",
+  "description": "Tall trees, a bubbling creek and a waterfall hidden in the ferns.",
+  "thumb": "worlds/thumbs/deep-forest.jpg",
+  "start": "entrance",
+  "timeOfDay": ["morning", "day", "sunset", "night"],
+  "weather": ["sunny", "cloudy", "rain", "fog"],
+  "locations": [
+    {
+      "id": "entrance", "name": "Forest Entrance",
+      "image": "worlds/forest/entrance.jpg", "imageSm": "worlds/forest/entrance-sm.jpg",
+      "tone": ["#2f5a3a", "#b9d3a0"],
+      "surface": "dirt",
+      "lighting": { "from": -35, "warmth": 0.12, "shadow": 0.5 },
+      "ground": { "horizon": 0.46, "nearScale": 0.5 },
+      "walk": [[0.08, 0.98], [0.3, 0.66], [0.44, 0.58], [0.58, 0.58], [0.72, 0.66], [0.94, 0.98]],
+      "spawn": [0.5, 0.86],
+      "foreground": [],
+      "nav": [
+        { "to": "creek", "x": 0.28, "y": 0.68 },
+        { "to": "giant-tree", "x": 0.52, "y": 0.6 }
+      ],
+      "interactions": [
+        { "id": "log", "x": 0.74, "y": 0.8, "kind": "jump", "story": "{name} jumped right over a mossy log!" },
+        { "id": "rock", "x": 0.2, "y": 0.9, "kind": "sit", "story": "{name} sat on a cool, smooth rock for a rest." }
+      ],
+      "discoveries": [
+        { "id": "footprints", "x": 0.62, "y": 0.74, "item": "footprints", "story": "{name} found little wombat footprints in the dirt!" },
+        { "id": "feather", "x": 0.36, "y": 0.92, "item": "feather", "story": "{name} found a soft, spotted feather." }
+      ],
+      "ambient": [
+        { "type": "dust", "area": [0.35, 0.05, 0.4, 0.6], "n": 26 },
+        { "type": "leaves", "area": [0, 0, 1, 0.6], "n": 6 },
+        { "type": "butterflies", "area": [0.1, 0.45, 0.8, 0.35], "n": 2 }
+      ],
+      "sound": "forest"
+    },
+    {
+      "id": "creek", "name": "Creek",
+      "image": "worlds/forest/creek.jpg", "imageSm": "worlds/forest/creek-sm.jpg",
+      "tone": ["#355e4a", "#a9c7b8"],
+      "surface": "rock",
+      "lighting": { "from": -20, "warmth": 0.06, "shadow": 0.42 },
+      "ground": { "horizon": 0.45, "nearScale": 0.48 },
+      "walk": [[0.04, 0.98], [0.12, 0.7], [0.4, 0.62], [0.66, 0.62], [0.9, 0.7], [0.97, 0.98]],
+      "spawn": [0.3, 0.86],
+      "foreground": [],
+      "nav": [
+        { "to": "entrance", "x": 0.08, "y": 0.9 },
+        { "to": "waterfall", "x": 0.7, "y": 0.64 }
+      ],
+      "interactions": [
+        { "id": "stones", "x": 0.5, "y": 0.76, "kind": "hop", "fx": "splash", "story": "{name} hopped across the stepping stones, one, two, three!" },
+        { "id": "splash", "x": 0.66, "y": 0.86, "kind": "splash", "fx": "splash", "story": "{name} splashed in the cool, clear creek!" }
+      ],
+      "discoveries": [
+        { "id": "pebble", "x": 0.82, "y": 0.92, "item": "pebble", "story": "{name} found a shiny, striped pebble." },
+        { "id": "frog", "x": 0.18, "y": 0.74, "item": "frog", "story": "{name} said hello to a tiny green frog!" }
+      ],
+      "ambient": [
+        { "type": "water", "area": [0.1, 0.62, 0.85, 0.3], "n": 40 },
+        { "type": "dust", "area": [0.2, 0.05, 0.6, 0.5], "n": 18 },
+        { "type": "butterflies", "area": [0.1, 0.4, 0.8, 0.3], "n": 1 }
+      ],
+      "sound": "creek"
+    },
+    {
+      "id": "giant-tree", "name": "Giant Tree",
+      "image": "worlds/forest/giant-tree.jpg", "imageSm": "worlds/forest/giant-tree-sm.jpg",
+      "tone": ["#3e3a2a", "#9db884"],
+      "surface": "leaf-litter",
+      "lighting": { "from": 30, "warmth": 0.14, "shadow": 0.5 },
+      "ground": { "horizon": 0.48, "nearScale": 0.5 },
+      "walk": [[0.05, 0.98], [0.16, 0.7], [0.36, 0.64], [0.66, 0.64], [0.86, 0.7], [0.96, 0.98]],
+      "spawn": [0.62, 0.86],
+      "foreground": [],
+      "nav": [
+        { "to": "entrance", "x": 0.9, "y": 0.9 },
+        { "to": "waterfall", "x": 0.18, "y": 0.72 }
+      ],
+      "interactions": [
+        { "id": "hollow", "x": 0.48, "y": 0.68, "kind": "peek", "story": "{name} peeked inside the tree hollow. It was cosy and dark in there!" },
+        { "id": "roots", "x": 0.32, "y": 0.82, "kind": "climb", "story": "{name} climbed up on the giant tree roots." }
+      ],
+      "discoveries": [
+        { "id": "acorn", "x": 0.7, "y": 0.76, "item": "gumnut", "story": "{name} found a gumnut cap, just like a little hat!" },
+        { "id": "map", "x": 0.52, "y": 0.66, "item": "map", "near": 0.08, "story": "{name} found an old treasure map hidden in the tree!" }
+      ],
+      "ambient": [
+        { "type": "dust", "area": [0.3, 0.05, 0.5, 0.6], "n": 24 },
+        { "type": "leaves", "area": [0, 0, 1, 0.5], "n": 8 },
+        { "type": "birds", "area": [0, 0.05, 1, 0.2], "n": 1 }
+      ],
+      "sound": "forest"
+    },
+    {
+      "id": "waterfall", "name": "Waterfall",
+      "image": "worlds/forest/waterfall.jpg", "imageSm": "worlds/forest/waterfall-sm.jpg",
+      "tone": ["#2a4e44", "#c3dccf"],
+      "surface": "rock",
+      "lighting": { "from": -10, "warmth": 0.04, "shadow": 0.38 },
+      "ground": { "horizon": 0.5, "nearScale": 0.46 },
+      "walk": [[0.04, 0.98], [0.1, 0.74], [0.34, 0.7], [0.66, 0.7], [0.9, 0.74], [0.96, 0.98]],
+      "spawn": [0.42, 0.88],
+      "foreground": [],
+      "nav": [
+        { "to": "creek", "x": 0.1, "y": 0.9 },
+        { "to": "giant-tree", "x": 0.9, "y": 0.86 }
+      ],
+      "interactions": [
+        { "id": "pool", "x": 0.56, "y": 0.8, "kind": "splash", "fx": "splash", "story": "{name} dipped a toe in the waterfall pool. Brrr, chilly!" },
+        { "id": "rainbow", "x": 0.5, "y": 0.62, "kind": "wonder", "fx": "sparkle", "story": "{name} saw a rainbow shimmering in the waterfall spray!" }
+      ],
+      "discoveries": [
+        { "id": "cave", "x": 0.78, "y": 0.66, "item": "cave", "near": 0.1, "story": "{name} discovered a secret cave behind the waterfall!" },
+        { "id": "dragonfly", "x": 0.3, "y": 0.72, "item": "dragonfly", "story": "{name} spotted a shimmering blue dragonfly." }
+      ],
+      "ambient": [
+        { "type": "water", "area": [0.3, 0.2, 0.4, 0.55], "n": 50, "fall": true },
+        { "type": "mist", "area": [0.25, 0.45, 0.5, 0.3], "n": 18 },
+        { "type": "butterflies", "area": [0.1, 0.4, 0.8, 0.3], "n": 2 }
+      ],
+      "sound": "waterfall"
+    }
+  ]
+}
