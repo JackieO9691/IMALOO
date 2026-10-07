@@ -209,16 +209,16 @@
       "interactions": [
         {
           "id": "waves",
-          "x": 0.72,
-          "y": 0.56,
+          "x": 0.3,
+          "y": 0.6,
           "kind": "splash",
           "fx": "splash",
           "story": "{name} jumped over the little waves at the water's edge!"
         },
         {
           "id": "castle",
-          "x": 0.34,
-          "y": 0.86,
+          "x": 0.74,
+          "y": 0.58,
           "kind": "build",
           "fx": "sandcastle",
           "story": "{name} built a beautiful sandcastle!"
@@ -343,15 +343,15 @@
         {
           "id": "pool",
           "x": 0.46,
-          "y": 0.62,
+          "y": 0.7,
           "kind": "peek",
           "fx": "ripples",
           "story": "{name} looked into the rock pool and saw tiny fish darting about!"
         },
         {
           "id": "crab",
-          "x": 0.71,
-          "y": 0.48,
+          "x": 0.8,
+          "y": 0.82,
           "kind": "wave",
           "story": "{name} waved hello to a little red crab. It waved back with a claw!"
         }
@@ -425,39 +425,98 @@
       },
       "ground": {
         "horizon": 0.42,
-        "nearScale": 0.34
+        "nearScale": 0.36
       },
       "walk": [
         [
-          0.25,
-          0.5
+          0.01,
+          0.98
         ],
         [
-          0.98,
-          0.48
+          0.01,
+          0.74
+        ],
+        [
+          0.32,
+          0.76
+        ],
+        [
+          0.4,
+          0.69
+        ],
+        [
+          0.45,
+          0.56
+        ],
+        [
+          0.55,
+          0.56
+        ],
+        [
+          0.6,
+          0.69
+        ],
+        [
+          0.68,
+          0.76
+        ],
+        [
+          0.99,
+          0.74
         ],
         [
           0.99,
           0.98
-        ],
-        [
-          0.01,
-          0.98
-        ],
-        [
-          0.01,
-          0.62
-        ],
-        [
-          0.12,
-          0.56
         ]
       ],
       "spawn": [
-        0.45,
-        0.82
+        0.42,
+        0.86
       ],
-      "foreground": [],
+      "foreground": [
+        {
+          "polygon": [
+            [
+              0.333,
+              0.54
+            ],
+            [
+              0.36,
+              0.54
+            ],
+            [
+              0.36,
+              0.71
+            ],
+            [
+              0.333,
+              0.71
+            ]
+          ],
+          "baseY": 0.71
+        },
+        {
+          "polygon": [
+            [
+              0.635,
+              0.54
+            ],
+            [
+              0.665,
+              0.54
+            ],
+            [
+              0.665,
+              0.71
+            ],
+            [
+              0.635,
+              0.71
+            ]
+          ],
+          "baseY": 0.71
+        }
+      ],
       "defaultTime": "sunset",
       "nav": [
         {
@@ -469,15 +528,15 @@
       "interactions": [
         {
           "id": "edge",
-          "x": 0.14,
-          "y": 0.43,
+          "x": 0.5,
+          "y": 0.53,
           "kind": "sit",
-          "story": "{name} sat on the old wooden jetty and watched the sun go down."
+          "story": "{name} walked to the end of the jetty and watched the sun go down."
         },
         {
           "id": "dolphins",
-          "x": 0.82,
-          "y": 0.3,
+          "x": 0.78,
+          "y": 0.6,
           "kind": "wonder",
           "fx": "sparkle",
           "story": "{name} saw dolphins playing in the golden water!"

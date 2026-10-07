@@ -212,66 +212,7 @@
         0.3,
         0.86
       ],
-      "foreground": [
-        {
-          "polygon": [
-            [
-              0.265,
-              0.83
-            ],
-            [
-              0.28,
-              0.77
-            ],
-            [
-              0.33,
-              0.74
-            ],
-            [
-              0.38,
-              0.745
-            ],
-            [
-              0.41,
-              0.77
-            ],
-            [
-              0.42,
-              0.83
-            ]
-          ],
-          "baseY": 0.8
-        },
-        {
-          "polygon": [
-            [
-              0.62,
-              0.82
-            ],
-            [
-              0.64,
-              0.74
-            ],
-            [
-              0.7,
-              0.7
-            ],
-            [
-              0.78,
-              0.72
-            ],
-            [
-              0.84,
-              0.78
-            ],
-            [
-              0.85,
-              0.83
-            ]
-          ],
-          "baseY": 0.8
-        }
-      ],
+      "foreground": [],
       "nav": [
         {
           "to": "entrance",
@@ -280,15 +221,15 @@
         },
         {
           "to": "waterfall",
-          "x": 0.7,
-          "y": 0.64
+          "x": 0.72,
+          "y": 0.58
         }
       ],
       "interactions": [
         {
           "id": "stones",
-          "x": 0.5,
-          "y": 0.76,
+          "x": 0.53,
+          "y": 0.7,
           "kind": "hop",
           "fx": "splash",
           "story": "{name} hopped across the stepping stones, one, two, three!"
@@ -296,7 +237,7 @@
         {
           "id": "splash",
           "x": 0.66,
-          "y": 0.86,
+          "y": 0.66,
           "kind": "splash",
           "fx": "splash",
           "story": "{name} splashed in the cool, clear creek!"
@@ -416,18 +357,19 @@
       ],
       "interactions": [
         {
-          "id": "hollow",
-          "x": 0.48,
-          "y": 0.68,
-          "kind": "peek",
-          "story": "{name} peeked inside the tree hollow. It was cosy and dark in there!"
+          "id": "door",
+          "x": 0.5,
+          "y": 0.55,
+          "kind": "knock",
+          "story": "{name} knocked on the little round door in the giant tree. Knock, knock! Who lives here?"
         },
         {
-          "id": "roots",
-          "x": 0.32,
-          "y": 0.82,
-          "kind": "climb",
-          "story": "{name} climbed up on the giant tree roots."
+          "id": "mushrooms",
+          "x": 0.36,
+          "y": 0.65,
+          "kind": "wonder",
+          "fx": "sparkle",
+          "story": "{name} found glowing mushrooms of every colour!"
         }
       ],
       "discoveries": [
@@ -547,15 +489,15 @@
         {
           "id": "pool",
           "x": 0.56,
-          "y": 0.8,
+          "y": 0.72,
           "kind": "splash",
           "fx": "splash",
           "story": "{name} dipped a toe in the waterfall pool. Brrr, chilly!"
         },
         {
           "id": "rainbow",
-          "x": 0.5,
-          "y": 0.62,
+          "x": 0.42,
+          "y": 0.48,
           "kind": "wonder",
           "fx": "sparkle",
           "story": "{name} saw a rainbow shimmering in the waterfall spray!"
