@@ -12,4 +12,6 @@ Open `index.html` in a browser, or serve the folder with any static web server (
 
 ## Hosting
 
-Deployed on Awesomate (hub.awesomate.ai) as a static app that rebuilds on every push to `main`.
+Live at https://imaloo.ambiencecarewa.awesomate.app (Awesomate static app "imaloo").
+
+Pushing to `main` does not update the live site. After a change, copy `index.html` up to the imaloo app again with the Awesomate tools (ask Claude to republish). The address is public; there is no private preview copy.
