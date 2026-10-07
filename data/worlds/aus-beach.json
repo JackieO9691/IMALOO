@@ -4,113 +4,516 @@
   "description": "Golden sand, rock pools full of surprises and a jetty at sunset.",
   "thumb": "worlds/thumbs/aus-beach.jpg",
   "start": "dunes",
-  "timeOfDay": ["morning", "day", "sunset", "night"],
-  "weather": ["sunny", "cloudy", "rain", "fog"],
+  "timeOfDay": [
+    "morning",
+    "day",
+    "sunset",
+    "night"
+  ],
+  "weather": [
+    "sunny",
+    "cloudy",
+    "rain",
+    "fog"
+  ],
   "locations": [
     {
-      "id": "dunes", "name": "Sand Dunes",
-      "image": "worlds/beach/dunes.jpg", "imageSm": "worlds/beach/dunes-sm.jpg",
-      "tone": ["#d9c08a", "#9fcfe0"],
+      "id": "dunes",
+      "name": "Sand Dunes",
+      "image": "worlds/beach/dunes.jpg",
+      "imageSm": "worlds/beach/dunes-sm.jpg",
+      "tone": [
+        "#d9c08a",
+        "#9fcfe0"
+      ],
       "surface": "sand",
-      "lighting": { "from": -40, "warmth": 0.14, "shadow": 0.55 },
-      "ground": { "horizon": 0.48, "nearScale": 0.5 },
-      "walk": [[0.06, 0.98], [0.26, 0.66], [0.44, 0.58], [0.6, 0.58], [0.76, 0.66], [0.95, 0.98]],
-      "spawn": [0.48, 0.86],
+      "lighting": {
+        "from": -40,
+        "warmth": 0.14,
+        "shadow": 0.55
+      },
+      "ground": {
+        "horizon": 0.5,
+        "nearScale": 0.33
+      },
+      "walk": [
+        [
+          0.06,
+          0.98
+        ],
+        [
+          0.26,
+          0.66
+        ],
+        [
+          0.42,
+          0.58
+        ],
+        [
+          0.47,
+          0.52
+        ],
+        [
+          0.55,
+          0.52
+        ],
+        [
+          0.6,
+          0.58
+        ],
+        [
+          0.76,
+          0.65
+        ],
+        [
+          0.96,
+          0.98
+        ]
+      ],
+      "spawn": [
+        0.48,
+        0.86
+      ],
       "foreground": [],
-      "nav": [ { "to": "main", "x": 0.52, "y": 0.6 } ],
+      "nav": [
+        {
+          "to": "main",
+          "x": 0.51,
+          "y": 0.5
+        }
+      ],
       "interactions": [
-        { "id": "slide", "x": 0.76, "y": 0.78, "kind": "slide", "story": "{name} slid all the way down the sand dune. Wheee!" },
-        { "id": "footprints", "x": 0.34, "y": 0.88, "kind": "walk", "fx": "footprints", "story": "{name} made a trail of footprints in the soft sand." }
+        {
+          "id": "slide",
+          "x": 0.76,
+          "y": 0.78,
+          "kind": "slide",
+          "story": "{name} slid all the way down the sand dune. Wheee!"
+        },
+        {
+          "id": "footprints",
+          "x": 0.34,
+          "y": 0.88,
+          "kind": "walk",
+          "fx": "footprints",
+          "story": "{name} made a trail of footprints in the soft sand."
+        }
       ],
       "discoveries": [
-        { "id": "shell", "x": 0.22, "y": 0.8, "item": "shell", "story": "{name} found a pretty pink shell!" },
-        { "id": "lizard", "x": 0.68, "y": 0.68, "item": "lizard", "story": "{name} spotted a little lizard sunbaking." }
+        {
+          "id": "shell",
+          "x": 0.22,
+          "y": 0.8,
+          "item": "shell",
+          "story": "{name} found a pretty pink shell!"
+        },
+        {
+          "id": "lizard",
+          "x": 0.68,
+          "y": 0.68,
+          "item": "lizard",
+          "story": "{name} spotted a little lizard sunbaking."
+        }
       ],
       "ambient": [
-        { "type": "sand", "area": [0, 0.6, 1, 0.35], "n": 22 },
-        { "type": "birds", "area": [0, 0.04, 1, 0.22], "n": 2 }
+        {
+          "type": "sand",
+          "area": [
+            0,
+            0.6,
+            1,
+            0.35
+          ],
+          "n": 22
+        },
+        {
+          "type": "birds",
+          "area": [
+            0,
+            0.04,
+            1,
+            0.22
+          ],
+          "n": 2
+        }
       ],
       "sound": "waves-far"
     },
     {
-      "id": "main", "name": "Main Beach",
-      "image": "worlds/beach/main.jpg", "imageSm": "worlds/beach/main-sm.jpg",
-      "tone": ["#e3c995", "#6fb7d6"],
+      "id": "main",
+      "name": "Main Beach",
+      "image": "worlds/beach/main.jpg",
+      "imageSm": "worlds/beach/main-sm.jpg",
+      "tone": [
+        "#e3c995",
+        "#6fb7d6"
+      ],
       "surface": "sand",
-      "lighting": { "from": -30, "warmth": 0.1, "shadow": 0.55 },
-      "ground": { "horizon": 0.46, "nearScale": 0.5 },
-      "walk": [[0.02, 0.98], [0.02, 0.64], [0.98, 0.64], [0.98, 0.98]],
-      "spawn": [0.5, 0.86],
+      "lighting": {
+        "from": -30,
+        "warmth": 0.1,
+        "shadow": 0.55
+      },
+      "ground": {
+        "horizon": 0.45,
+        "nearScale": 0.34
+      },
+      "walk": [
+        [
+          0.01,
+          0.5
+        ],
+        [
+          0.6,
+          0.5
+        ],
+        [
+          0.8,
+          0.58
+        ],
+        [
+          0.99,
+          0.62
+        ],
+        [
+          0.99,
+          0.98
+        ],
+        [
+          0.01,
+          0.98
+        ]
+      ],
+      "spawn": [
+        0.5,
+        0.86
+      ],
       "foreground": [],
       "nav": [
-        { "to": "dunes", "x": 0.06, "y": 0.9 },
-        { "to": "rock-pools", "x": 0.88, "y": 0.72 },
-        { "to": "jetty", "x": 0.18, "y": 0.68 }
+        {
+          "to": "dunes",
+          "x": 0.06,
+          "y": 0.9
+        },
+        {
+          "to": "rock-pools",
+          "x": 0.88,
+          "y": 0.72
+        },
+        {
+          "to": "jetty",
+          "x": 0.18,
+          "y": 0.68
+        }
       ],
       "interactions": [
-        { "id": "waves", "x": 0.54, "y": 0.68, "kind": "splash", "fx": "splash", "story": "{name} jumped over the little waves at the water's edge!" },
-        { "id": "castle", "x": 0.34, "y": 0.86, "kind": "build", "fx": "sandcastle", "story": "{name} built a beautiful sandcastle!" },
-        { "id": "driftwood", "x": 0.74, "y": 0.88, "kind": "sit", "story": "{name} sat on a piece of driftwood and listened to the waves." }
+        {
+          "id": "waves",
+          "x": 0.72,
+          "y": 0.56,
+          "kind": "splash",
+          "fx": "splash",
+          "story": "{name} jumped over the little waves at the water's edge!"
+        },
+        {
+          "id": "castle",
+          "x": 0.34,
+          "y": 0.86,
+          "kind": "build",
+          "fx": "sandcastle",
+          "story": "{name} built a beautiful sandcastle!"
+        },
+        {
+          "id": "driftwood",
+          "x": 0.74,
+          "y": 0.88,
+          "kind": "sit",
+          "story": "{name} sat on a piece of driftwood and listened to the waves."
+        }
       ],
       "discoveries": [
-        { "id": "starfish", "x": 0.64, "y": 0.78, "item": "starfish", "story": "{name} found an orange starfish!" },
-        { "id": "bottle", "x": 0.9, "y": 0.92, "item": "bottle", "near": 0.08, "story": "{name} found a message in a bottle! It says: Hello, friend!" }
+        {
+          "id": "starfish",
+          "x": 0.64,
+          "y": 0.78,
+          "item": "starfish",
+          "story": "{name} found an orange starfish!"
+        },
+        {
+          "id": "bottle",
+          "x": 0.9,
+          "y": 0.92,
+          "item": "bottle",
+          "near": 0.08,
+          "story": "{name} found a message in a bottle! It says: Hello, friend!"
+        }
       ],
       "ambient": [
-        { "type": "waves", "area": [0, 0.55, 1, 0.14], "n": 5 },
-        { "type": "birds", "area": [0, 0.04, 1, 0.2], "n": 2 },
-        { "type": "sand", "area": [0, 0.7, 1, 0.25], "n": 12 }
+        {
+          "type": "waves",
+          "area": [
+            0,
+            0.55,
+            1,
+            0.14
+          ],
+          "n": 36
+        },
+        {
+          "type": "birds",
+          "area": [
+            0,
+            0.04,
+            1,
+            0.2
+          ],
+          "n": 2
+        },
+        {
+          "type": "sand",
+          "area": [
+            0,
+            0.7,
+            1,
+            0.25
+          ],
+          "n": 12
+        }
       ],
       "sound": "waves"
     },
     {
-      "id": "rock-pools", "name": "Rock Pools",
-      "image": "worlds/beach/rock-pools.jpg", "imageSm": "worlds/beach/rock-pools-sm.jpg",
-      "tone": ["#6b6a5e", "#8fc3cf"],
+      "id": "rock-pools",
+      "name": "Rock Pools",
+      "image": "worlds/beach/rock-pools.jpg",
+      "imageSm": "worlds/beach/rock-pools-sm.jpg",
+      "tone": [
+        "#6b6a5e",
+        "#8fc3cf"
+      ],
       "surface": "rock",
-      "lighting": { "from": -25, "warmth": 0.08, "shadow": 0.48 },
-      "ground": { "horizon": 0.44, "nearScale": 0.48 },
-      "walk": [[0.04, 0.98], [0.1, 0.68], [0.9, 0.68], [0.96, 0.98]],
-      "spawn": [0.3, 0.88],
+      "lighting": {
+        "from": -25,
+        "warmth": 0.08,
+        "shadow": 0.48
+      },
+      "ground": {
+        "horizon": 0.44,
+        "nearScale": 0.33
+      },
+      "walk": [
+        [
+          0.1,
+          0.66
+        ],
+        [
+          0.3,
+          0.6
+        ],
+        [
+          0.75,
+          0.6
+        ],
+        [
+          0.9,
+          0.66
+        ],
+        [
+          0.97,
+          0.98
+        ],
+        [
+          0.03,
+          0.98
+        ]
+      ],
+      "spawn": [
+        0.3,
+        0.88
+      ],
       "foreground": [],
-      "nav": [ { "to": "main", "x": 0.08, "y": 0.92 } ],
+      "nav": [
+        {
+          "to": "main",
+          "x": 0.08,
+          "y": 0.92
+        }
+      ],
       "interactions": [
-        { "id": "pool", "x": 0.56, "y": 0.8, "kind": "peek", "fx": "ripples", "story": "{name} looked into the rock pool and saw tiny fish darting about!" },
-        { "id": "crab", "x": 0.76, "y": 0.76, "kind": "wave", "story": "{name} waved hello to a little red crab. It waved back with a claw!" }
+        {
+          "id": "pool",
+          "x": 0.46,
+          "y": 0.62,
+          "kind": "peek",
+          "fx": "ripples",
+          "story": "{name} looked into the rock pool and saw tiny fish darting about!"
+        },
+        {
+          "id": "crab",
+          "x": 0.71,
+          "y": 0.48,
+          "kind": "wave",
+          "story": "{name} waved hello to a little red crab. It waved back with a claw!"
+        }
       ],
       "discoveries": [
-        { "id": "anemone", "x": 0.42, "y": 0.86, "item": "anemone", "story": "{name} found a squishy sea anemone." },
-        { "id": "pearl", "x": 0.86, "y": 0.9, "item": "pearl", "near": 0.07, "story": "{name} found a shiny pearl in a shell!" }
+        {
+          "id": "anemone",
+          "x": 0.42,
+          "y": 0.86,
+          "item": "anemone",
+          "story": "{name} found a squishy sea anemone."
+        },
+        {
+          "id": "pearl",
+          "x": 0.86,
+          "y": 0.9,
+          "item": "pearl",
+          "near": 0.07,
+          "story": "{name} found a shiny pearl in a shell!"
+        }
       ],
       "ambient": [
-        { "type": "water", "area": [0.2, 0.68, 0.7, 0.25], "n": 30 },
-        { "type": "waves", "area": [0, 0.46, 1, 0.12], "n": 3 },
-        { "type": "birds", "area": [0, 0.04, 1, 0.2], "n": 1 }
+        {
+          "type": "water",
+          "area": [
+            0.2,
+            0.68,
+            0.7,
+            0.25
+          ],
+          "n": 30
+        },
+        {
+          "type": "waves",
+          "area": [
+            0,
+            0.46,
+            1,
+            0.12
+          ],
+          "n": 36
+        },
+        {
+          "type": "birds",
+          "area": [
+            0,
+            0.04,
+            1,
+            0.2
+          ],
+          "n": 1
+        }
       ],
       "sound": "waves"
     },
     {
-      "id": "jetty", "name": "Jetty at Sunset",
-      "image": "worlds/beach/jetty.jpg", "imageSm": "worlds/beach/jetty-sm.jpg",
-      "tone": ["#e08a5a", "#5a6f9a"],
+      "id": "jetty",
+      "name": "Jetty at Sunset",
+      "image": "worlds/beach/jetty.jpg",
+      "imageSm": "worlds/beach/jetty-sm.jpg",
+      "tone": [
+        "#e08a5a",
+        "#5a6f9a"
+      ],
       "surface": "wood",
-      "lighting": { "from": 0, "warmth": 0.3, "shadow": 0.45, "backlit": true },
-      "ground": { "horizon": 0.5, "nearScale": 0.5 },
-      "walk": [[0.3, 0.98], [0.44, 0.62], [0.56, 0.62], [0.7, 0.98]],
-      "spawn": [0.5, 0.86],
+      "lighting": {
+        "from": 0,
+        "warmth": 0.3,
+        "shadow": 0.45,
+        "backlit": true
+      },
+      "ground": {
+        "horizon": 0.42,
+        "nearScale": 0.34
+      },
+      "walk": [
+        [
+          0.25,
+          0.5
+        ],
+        [
+          0.98,
+          0.48
+        ],
+        [
+          0.99,
+          0.98
+        ],
+        [
+          0.01,
+          0.98
+        ],
+        [
+          0.01,
+          0.62
+        ],
+        [
+          0.12,
+          0.56
+        ]
+      ],
+      "spawn": [
+        0.45,
+        0.82
+      ],
       "foreground": [],
       "defaultTime": "sunset",
-      "nav": [ { "to": "main", "x": 0.4, "y": 0.94 } ],
+      "nav": [
+        {
+          "to": "main",
+          "x": 0.08,
+          "y": 0.88
+        }
+      ],
       "interactions": [
-        { "id": "edge", "x": 0.52, "y": 0.66, "kind": "sit", "story": "{name} sat at the end of the jetty and watched the sun go down." },
-        { "id": "dolphins", "x": 0.72, "y": 0.56, "kind": "wonder", "fx": "sparkle", "story": "{name} saw dolphins playing in the golden water!" }
+        {
+          "id": "edge",
+          "x": 0.14,
+          "y": 0.43,
+          "kind": "sit",
+          "story": "{name} sat on the old wooden jetty and watched the sun go down."
+        },
+        {
+          "id": "dolphins",
+          "x": 0.82,
+          "y": 0.3,
+          "kind": "wonder",
+          "fx": "sparkle",
+          "story": "{name} saw dolphins playing in the golden water!"
+        }
       ],
       "discoveries": [
-        { "id": "rope", "x": 0.6, "y": 0.8, "item": "shell", "story": "{name} found a spiral shell on the jetty." }
+        {
+          "id": "rope",
+          "x": 0.6,
+          "y": 0.8,
+          "item": "shell",
+          "story": "{name} found a spiral shell on the jetty."
+        }
       ],
       "ambient": [
-        { "type": "water", "area": [0, 0.5, 1, 0.45], "n": 40, "warm": true },
-        { "type": "birds", "area": [0, 0.08, 1, 0.22], "n": 2 }
+        {
+          "type": "water",
+          "area": [
+            0,
+            0.5,
+            1,
+            0.45
+          ],
+          "n": 40,
+          "warm": true
+        },
+        {
+          "type": "birds",
+          "area": [
+            0,
+            0.08,
+            1,
+            0.22
+          ],
+          "n": 2
+        }
       ],
       "sound": "waves-calm"
     }

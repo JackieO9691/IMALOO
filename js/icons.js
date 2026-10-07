@@ -18,11 +18,10 @@ export const ICONS = {
   walk: s('<ellipse cx="11" cy="20" rx="3.6" ry="5.5"/><ellipse cx="21" cy="11" rx="3.6" ry="5.5"/>'),
   build: s('<path d="M6 26h20V14h-4v-4h-3v4h-6v-4h-3v4H6z"/><path d="M14 26v-5h4v5"/>'),
   knock: s('<rect x="8" y="4" width="16" height="24" rx="2"/><circle cx="20" cy="16" r="1.2"/>'),
-  lights: s('<path d="M3 8q13 10 26 0"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="14" r="2"/><circle cx="24" cy="12" r="2"/>'),
+  lights: s('<path d="M11 19a7 7 0 1110 0c-1.4 1.3-2 2.6-2 4h-6c0-1.4-.6-2.7-2-4z"/><path d="M13 27h6M16 3V1M5 9L3.5 7.5M27 9l1.5-1.5"/>'),
   wave: s('<path d="M11 18V8a2 2 0 014 0v8M15 15V6a2 2 0 014 0v10M19 15V8a2 2 0 014 0v10q0 9-8 9-5 0-8-6l-3-5a2 2 0 013-2l3 3"/>'),
   dig: s('<path d="M20 4l8 8M24 8L12 20"/><path d="M6 26l6-6 3 3-6 6z"/>'),
   smell: s('<circle cx="16" cy="12" r="4"/><circle cx="16" cy="12" r="9" stroke-dasharray="3 4"/><path d="M16 21v8"/>'),
-  build2: '',
   // found things
   footprints: f('<g fill="#6b4a2a"><ellipse cx="10" cy="21" rx="3.5" ry="4.5"/><ellipse cx="22" cy="12" rx="3.5" ry="4.5"/><circle cx="6.5" cy="15" r="1.4"/><circle cx="9" cy="13.5" r="1.4"/><circle cx="12" cy="13.8" r="1.4"/><circle cx="18.5" cy="6" r="1.4"/><circle cx="21" cy="4.5" r="1.4"/><circle cx="24" cy="4.8" r="1.4"/></g>'),
   feather: f('<path d="M24 4C12 8 7 18 8 28c8-3 15-11 16-24z" fill="#b8a07a"/><path d="M8 28L22 8" stroke="#6b5a40" stroke-width="1.4"/>'),

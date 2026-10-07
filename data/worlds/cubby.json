@@ -4,85 +4,579 @@
   "description": "A wooden cubby with fairy lights, cushions and a garden to explore.",
   "thumb": "worlds/thumbs/cubby.jpg",
   "start": "backyard",
-  "timeOfDay": ["morning", "day", "sunset", "night"],
-  "weather": ["sunny", "cloudy", "rain"],
+  "timeOfDay": [
+    "morning",
+    "day",
+    "sunset",
+    "night"
+  ],
+  "weather": [
+    "sunny",
+    "cloudy",
+    "rain"
+  ],
   "locations": [
     {
-      "id": "backyard", "name": "Backyard",
-      "image": "worlds/cubby/backyard.jpg", "imageSm": "worlds/cubby/backyard-sm.jpg",
-      "tone": ["#6f9a52", "#c9b08a"],
+      "id": "backyard",
+      "name": "Backyard",
+      "image": "worlds/cubby/backyard.jpg",
+      "imageSm": "worlds/cubby/backyard-sm.jpg",
+      "tone": [
+        "#6f9a52",
+        "#c9b08a"
+      ],
       "surface": "grass",
-      "lighting": { "from": -30, "warmth": 0.1, "shadow": 0.5 },
-      "ground": { "horizon": 0.48, "nearScale": 0.5 },
-      "walk": [[0.02, 0.98], [0.04, 0.66], [0.96, 0.66], [0.98, 0.98]],
-      "spawn": [0.36, 0.86],
+      "lighting": {
+        "from": -30,
+        "warmth": 0.1,
+        "shadow": 0.5
+      },
+      "ground": {
+        "horizon": 0.5,
+        "nearScale": 0.33
+      },
+      "walk": [
+        [
+          0.02,
+          0.6
+        ],
+        [
+          0.43,
+          0.58
+        ],
+        [
+          0.53,
+          0.63
+        ],
+        [
+          0.78,
+          0.63
+        ],
+        [
+          0.98,
+          0.58
+        ],
+        [
+          0.99,
+          0.98
+        ],
+        [
+          0.01,
+          0.98
+        ]
+      ],
+      "spawn": [
+        0.36,
+        0.86
+      ],
       "foreground": [],
       "nav": [
-        { "to": "inside", "x": 0.6, "y": 0.66 },
-        { "to": "garden", "x": 0.08, "y": 0.84 }
+        {
+          "to": "inside",
+          "x": 0.6,
+          "y": 0.66
+        },
+        {
+          "to": "garden",
+          "x": 0.08,
+          "y": 0.84
+        }
       ],
       "interactions": [
-        { "id": "door", "x": 0.6, "y": 0.66, "kind": "knock", "story": "{name} knocked on the cubby door. Knock, knock!" },
-        { "id": "lights", "x": 0.82, "y": 0.72, "kind": "lights", "story": "{name} switched on the twinkly fairy lights!" }
+        {
+          "id": "door",
+          "x": 0.6,
+          "y": 0.47,
+          "kind": "knock",
+          "story": "{name} knocked on the cubby door. Knock, knock!"
+        },
+        {
+          "id": "lights",
+          "x": 0.66,
+          "y": 0.2,
+          "kind": "lights",
+          "story": "{name} switched on the twinkly fairy lights!"
+        }
       ],
-      "lights": [[0.42, 0.3], [0.48, 0.28], [0.54, 0.27], [0.6, 0.28], [0.66, 0.3], [0.72, 0.33], [0.78, 0.36]],
+      "lights": [
+        [
+          0.43,
+          0.31
+        ],
+        [
+          0.455,
+          0.29
+        ],
+        [
+          0.48,
+          0.27
+        ],
+        [
+          0.505,
+          0.25
+        ],
+        [
+          0.53,
+          0.225
+        ],
+        [
+          0.555,
+          0.2
+        ],
+        [
+          0.58,
+          0.17
+        ],
+        [
+          0.605,
+          0.14
+        ],
+        [
+          0.625,
+          0.13
+        ],
+        [
+          0.645,
+          0.16
+        ],
+        [
+          0.665,
+          0.19
+        ],
+        [
+          0.685,
+          0.225
+        ],
+        [
+          0.705,
+          0.27
+        ]
+      ],
       "discoveries": [
-        { "id": "ball", "x": 0.22, "y": 0.78, "item": "ball", "story": "{name} found a lost bouncy ball in the grass!" },
-        { "id": "ladybird", "x": 0.86, "y": 0.9, "item": "ladybird", "story": "{name} found a ladybird on a leaf." }
+        {
+          "id": "ball",
+          "x": 0.22,
+          "y": 0.78,
+          "item": "ball",
+          "story": "{name} found a lost bouncy ball in the grass!"
+        },
+        {
+          "id": "ladybird",
+          "x": 0.86,
+          "y": 0.9,
+          "item": "ladybird",
+          "story": "{name} found a ladybird on a leaf."
+        }
       ],
       "ambient": [
-        { "type": "butterflies", "area": [0, 0.4, 1, 0.35], "n": 2 },
-        { "type": "birds", "area": [0, 0.04, 1, 0.2], "n": 1 },
-        { "type": "dust", "area": [0.1, 0.1, 0.8, 0.5], "n": 12 }
+        {
+          "type": "butterflies",
+          "area": [
+            0,
+            0.4,
+            1,
+            0.35
+          ],
+          "n": 2
+        },
+        {
+          "type": "birds",
+          "area": [
+            0,
+            0.04,
+            1,
+            0.2
+          ],
+          "n": 1
+        },
+        {
+          "type": "dust",
+          "area": [
+            0.1,
+            0.1,
+            0.8,
+            0.5
+          ],
+          "n": 12
+        }
       ],
       "sound": "backyard"
     },
     {
-      "id": "inside", "name": "Inside the Cubby",
-      "image": "worlds/cubby/inside.jpg", "imageSm": "worlds/cubby/inside-sm.jpg",
-      "tone": ["#8a6a4a", "#e9c99a"],
+      "id": "inside",
+      "name": "Inside the Cubby",
+      "image": "worlds/cubby/inside.jpg",
+      "imageSm": "worlds/cubby/inside-sm.jpg",
+      "tone": [
+        "#8a6a4a",
+        "#e9c99a"
+      ],
       "surface": "fabric",
-      "lighting": { "from": 20, "warmth": 0.22, "shadow": 0.45 },
-      "ground": { "horizon": 0.5, "nearScale": 0.52 },
-      "walk": [[0.04, 0.98], [0.08, 0.7], [0.92, 0.7], [0.96, 0.98]],
-      "spawn": [0.5, 0.88],
-      "foreground": [],
-      "nav": [ { "to": "backyard", "x": 0.08, "y": 0.92 } ],
+      "lighting": {
+        "from": 20,
+        "warmth": 0.22,
+        "shadow": 0.45
+      },
+      "ground": {
+        "horizon": 0.5,
+        "nearScale": 0.34
+      },
+      "walk": [
+        [
+          0.3,
+          0.7
+        ],
+        [
+          0.75,
+          0.7
+        ],
+        [
+          0.88,
+          0.8
+        ],
+        [
+          0.94,
+          0.98
+        ],
+        [
+          0.08,
+          0.98
+        ],
+        [
+          0.2,
+          0.8
+        ]
+      ],
+      "spawn": [
+        0.5,
+        0.88
+      ],
+      "foreground": [
+        {
+          "polygon": [
+            [
+              0,
+              0.62
+            ],
+            [
+              0.1,
+              0.66
+            ],
+            [
+              0.22,
+              0.74
+            ],
+            [
+              0.28,
+              0.84
+            ],
+            [
+              0.27,
+              0.98
+            ],
+            [
+              0,
+              0.98
+            ]
+          ],
+          "baseY": 0.99
+        },
+        {
+          "polygon": [
+            [
+              0.78,
+              0.72
+            ],
+            [
+              0.9,
+              0.68
+            ],
+            [
+              1,
+              0.66
+            ],
+            [
+              1,
+              0.98
+            ],
+            [
+              0.84,
+              0.98
+            ],
+            [
+              0.78,
+              0.86
+            ]
+          ],
+          "baseY": 0.99
+        }
+      ],
+      "nav": [
+        {
+          "to": "backyard",
+          "x": 0.08,
+          "y": 0.92
+        }
+      ],
       "interactions": [
-        { "id": "cushions", "x": 0.36, "y": 0.82, "kind": "sit", "story": "{name} snuggled into the soft cushions." },
-        { "id": "window", "x": 0.7, "y": 0.6, "kind": "peek", "story": "{name} looked out the little window at the garden." },
-        { "id": "lights", "x": 0.52, "y": 0.72, "kind": "lights", "story": "{name} turned on the fairy lights. So cosy!" }
+        {
+          "id": "cushions",
+          "x": 0.33,
+          "y": 0.62,
+          "kind": "sit",
+          "story": "{name} snuggled into the soft cushions."
+        },
+        {
+          "id": "window",
+          "x": 0.5,
+          "y": 0.36,
+          "kind": "peek",
+          "story": "{name} looked out the little window at the garden."
+        },
+        {
+          "id": "lights",
+          "x": 0.36,
+          "y": 0.22,
+          "kind": "lights",
+          "story": "{name} turned on the fairy lights. So cosy!"
+        }
       ],
-      "lights": [[0.2, 0.18], [0.3, 0.15], [0.4, 0.14], [0.5, 0.14], [0.6, 0.14], [0.7, 0.15], [0.8, 0.18]],
+      "lights": [
+        [
+          0.05,
+          0.1
+        ],
+        [
+          0.13,
+          0.17
+        ],
+        [
+          0.2,
+          0.2
+        ],
+        [
+          0.3,
+          0.24
+        ],
+        [
+          0.38,
+          0.17
+        ],
+        [
+          0.45,
+          0.12
+        ],
+        [
+          0.59,
+          0.12
+        ],
+        [
+          0.66,
+          0.17
+        ],
+        [
+          0.75,
+          0.2
+        ],
+        [
+          0.82,
+          0.23
+        ],
+        [
+          0.9,
+          0.18
+        ],
+        [
+          0.98,
+          0.06
+        ]
+      ],
       "discoveries": [
-        { "id": "book", "x": 0.86, "y": 0.86, "item": "book", "story": "{name} found a picture book about the moon." },
-        { "id": "key", "x": 0.2, "y": 0.9, "item": "key", "near": 0.07, "story": "{name} found a tiny golden key under a cushion!" }
+        {
+          "id": "book",
+          "x": 0.72,
+          "y": 0.8,
+          "item": "book",
+          "story": "{name} found a picture book about the moon."
+        },
+        {
+          "id": "key",
+          "x": 0.25,
+          "y": 0.9,
+          "item": "key",
+          "near": 0.07,
+          "story": "{name} found a tiny golden key under a cushion!"
+        }
       ],
-      "ambient": [ { "type": "dust", "area": [0.2, 0.1, 0.6, 0.6], "n": 30 } ],
+      "ambient": [
+        {
+          "type": "dust",
+          "area": [
+            0.2,
+            0.1,
+            0.6,
+            0.6
+          ],
+          "n": 30
+        }
+      ],
       "sound": "indoors"
     },
     {
-      "id": "garden", "name": "Garden and Sandpit",
-      "image": "worlds/cubby/garden.jpg", "imageSm": "worlds/cubby/garden-sm.jpg",
-      "tone": ["#5f9a4a", "#e6d2a4"],
+      "id": "garden",
+      "name": "Garden and Sandpit",
+      "image": "worlds/cubby/garden.jpg",
+      "imageSm": "worlds/cubby/garden-sm.jpg",
+      "tone": [
+        "#5f9a4a",
+        "#e6d2a4"
+      ],
       "surface": "grass",
-      "lighting": { "from": -35, "warmth": 0.1, "shadow": 0.5 },
-      "ground": { "horizon": 0.47, "nearScale": 0.5 },
-      "walk": [[0.02, 0.98], [0.04, 0.66], [0.96, 0.66], [0.98, 0.98]],
-      "spawn": [0.5, 0.86],
-      "foreground": [],
-      "nav": [ { "to": "backyard", "x": 0.92, "y": 0.86 } ],
+      "lighting": {
+        "from": -35,
+        "warmth": 0.1,
+        "shadow": 0.5
+      },
+      "ground": {
+        "horizon": 0.47,
+        "nearScale": 0.33
+      },
+      "walk": [
+        [
+          0.42,
+          0.62
+        ],
+        [
+          0.56,
+          0.55
+        ],
+        [
+          0.6,
+          0.48
+        ],
+        [
+          0.7,
+          0.48
+        ],
+        [
+          0.7,
+          0.62
+        ],
+        [
+          0.78,
+          0.72
+        ],
+        [
+          0.87,
+          0.98
+        ],
+        [
+          0.24,
+          0.98
+        ],
+        [
+          0.32,
+          0.78
+        ],
+        [
+          0.42,
+          0.68
+        ]
+      ],
+      "spawn": [
+        0.5,
+        0.86
+      ],
+      "foreground": [
+        {
+          "polygon": [
+            [
+              0.25,
+              0.98
+            ],
+            [
+              0.32,
+              0.78
+            ],
+            [
+              0.42,
+              0.66
+            ],
+            [
+              0.42,
+              0.6
+            ],
+            [
+              0.0,
+              0.98
+            ]
+          ],
+          "baseY": 0.99
+        }
+      ],
+      "nav": [
+        {
+          "to": "backyard",
+          "x": 0.66,
+          "y": 0.45
+        }
+      ],
       "interactions": [
-        { "id": "sandpit", "x": 0.3, "y": 0.84, "kind": "dig", "fx": "sand", "story": "{name} dug a deep hole in the sandpit!" },
-        { "id": "flowers", "x": 0.66, "y": 0.74, "kind": "smell", "fx": "sparkle", "story": "{name} smelled the sweet flowers. Mmm!" }
+        {
+          "id": "sandpit",
+          "x": 0.86,
+          "y": 0.56,
+          "kind": "dig",
+          "fx": "sand",
+          "story": "{name} dug a deep hole in the sandpit!"
+        },
+        {
+          "id": "flowers",
+          "x": 0.47,
+          "y": 0.57,
+          "kind": "smell",
+          "fx": "sparkle",
+          "story": "{name} smelled the sweet flowers. Mmm!"
+        }
       ],
       "discoveries": [
-        { "id": "snail", "x": 0.8, "y": 0.84, "item": "snail", "story": "{name} met a slow and friendly snail." },
-        { "id": "dino", "x": 0.2, "y": 0.92, "item": "fossil", "near": 0.07, "story": "{name} dug up a toy dinosaur bone!" }
+        {
+          "id": "snail",
+          "x": 0.8,
+          "y": 0.84,
+          "item": "snail",
+          "story": "{name} met a slow and friendly snail."
+        },
+        {
+          "id": "dino",
+          "x": 0.2,
+          "y": 0.92,
+          "item": "fossil",
+          "near": 0.07,
+          "story": "{name} dug up a toy dinosaur bone!"
+        }
       ],
       "ambient": [
-        { "type": "butterflies", "area": [0, 0.4, 1, 0.35], "n": 3 },
-        { "type": "bees", "area": [0.5, 0.55, 0.4, 0.25], "n": 2 }
+        {
+          "type": "butterflies",
+          "area": [
+            0,
+            0.4,
+            1,
+            0.35
+          ],
+          "n": 3
+        },
+        {
+          "type": "bees",
+          "area": [
+            0.5,
+            0.55,
+            0.4,
+            0.25
+          ],
+          "n": 2
+        }
       ],
       "sound": "backyard"
     }

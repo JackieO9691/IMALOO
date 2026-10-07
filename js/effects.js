@@ -27,7 +27,7 @@ export class Effects {
     this.c.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  setScene(ambient = [], { time = 'day', weather = 'sunny' } = {}) {
+  setScene(ambient = [], { time = 'day', weather = 'sunny', indoor = false } = {}) {
     this.time = time; this.weather = weather;
     this.parts = [];
     const night = time === 'night';
@@ -40,6 +40,8 @@ export class Effects {
       const n = this.reduced ? Math.ceil((a.n || 10) / 3) : (a.n || 10);
       for (let i = 0; i < n; i++) this.parts.push(this.spawn(type, a));
     });
+    // Indoors: no sky, so no stars, fireflies, rain or snow drawn over the room.
+    if (indoor) return;
     if (night) {
       for (let i = 0; i < 40; i++) this.parts.push(this.spawn('stars', { area: [0, 0, 1, 0.35] }));
       for (let i = 0; i < 10; i++) this.parts.push(this.spawn('fireflies', { area: [0, 0.4, 1, 0.5] }));
@@ -150,13 +152,13 @@ export class Effects {
           c.fillStyle = g; c.beginPath(); c.arc(X + Math.sin(T * 0.2 + p.ph) * 10, Y, 60 * p.s, 0, TAU); c.fill(); break;
         }
         case 'waves': {
-          // A soft foam line that rolls up the sand and back.
-          const k = 0.5 + 0.5 * Math.sin(T * 0.6 + p.ph);
-          const wy = (p.ay + p.ah * k) * H;
-          c.strokeStyle = `rgba(255,255,255,${0.12 + 0.18 * (1 - k)})`; c.lineWidth = 2;
-          c.beginPath();
-          for (let x = 0; x <= W; x += 24) c.lineTo(x, wy + Math.sin(x * 0.02 + T + p.ph) * 3);
-          c.stroke(); break;
+          // Sunlight glinting on moving water: short soft highlights that drift and fade.
+          const a = Math.max(0, Math.sin(T * p.v * 4 + p.ph));
+          p.x += 0.004 * dt; if (p.x > p.ax + p.aw) p.x = p.ax;
+          const len = (10 + 18 * p.s) * (W / 1280), gx = X;
+          const g = c.createLinearGradient(gx - len, Y, gx + len, Y);
+          g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(.5, `rgba(255,252,240,${0.35 * a})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+          c.strokeStyle = g; c.lineWidth = 1.5; c.beginPath(); c.moveTo(gx - len, Y); c.lineTo(gx + len, Y); c.stroke(); break;
         }
         case 'sand': {
           p.x += 0.01 * dt; if (p.x > p.ax + p.aw) p.x = p.ax;

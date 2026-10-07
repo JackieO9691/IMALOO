@@ -78,8 +78,8 @@ export class WorldViewer {
     this.buildForeground(L); this.buildLights(L); this.buildHotspots(L);
     this.el.marks.innerHTML = '';
     this.applyLight();
-    this.fx.setScene(L.ambient, { time: this.time, weather: this.weather });
-    Sound.play(L.sound, { time: this.time, weather: this.weather });
+    this.fx.setScene(L.ambient, { time: this.time, weather: this.weather, indoor: !!(this.L.indoor || this.L.surface === 'floor') });
+    Sound.play(L.sound, { time: this.time, weather: this.weather, indoor: !!(this.L.indoor || this.L.surface === 'floor') });
     // Arrive from the side the child came from, then walk in.
     const s = { x: L.spawn[0], y: L.spawn[1] };
     const from = arrive ? { x: arrive.x < 0.5 ? 0.98 : 0.02, y: 0.95 } : null;
@@ -174,8 +174,8 @@ export class WorldViewer {
   setWeather(w) { this.weather = w; this.applyLight(); this.refreshScene(); }
   refreshScene() {
     if (!this.L) return;
-    this.fx.setScene(this.L.ambient, { time: this.time, weather: this.weather });
-    Sound.play(this.L.sound, { time: this.time, weather: this.weather });
+    this.fx.setScene(this.L.ambient, { time: this.time, weather: this.weather, indoor: !!(this.L.indoor || this.L.surface === 'floor') });
+    Sound.play(this.L.sound, { time: this.time, weather: this.weather, indoor: !!(this.L.indoor || this.L.surface === 'floor') });
   }
   applyLight() {
     const T = TIMES[this.time] || TIMES.day, Wt = WEATHER[this.weather] || WEATHER.sunny, L = this.L;
