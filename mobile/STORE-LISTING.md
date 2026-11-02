@@ -33,7 +33,7 @@ SAFE BY DESIGN
 Imaloo — where toys come to life and childhood stays innocent.
 
 PLANS
-IMALOO includes a 7-day free trial. Families can choose a plan at imaloo.com.au.
+IMALOO includes a 7-day free trial. Families can choose a plan at app.imaloo.com.au.
 
 ## Keywords (Apple, 100 characters max)
 toys,teddy,kids,stories,movie maker,storybook,toddler,preschool,imagination,learning,spelling,maths
@@ -44,7 +44,7 @@ Apple: Kids (Ages 5 and under), secondary Education. Google: Education or Entert
 ## Links
 Privacy policy: https://app.imaloo.com.au/privacy
 Support: support@imaloo.com.au
-Website: https://imaloo.com.au
+Website: https://app.imaloo.com.au
 
 ## Age rating answers (both stores)
 No violence, no scary content, no ads, no chat with strangers, no web browsing. Children cannot type their own AI prompts. Content made by AI is checked before it is shown.
