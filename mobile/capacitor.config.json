@@ -1,0 +1,16 @@
+{
+  "appId": "au.com.imaloo.app",
+  "appName": "IMALOO",
+  "webDir": "www",
+  "server": {
+    "url": "https://app.imaloo.com.au",
+    "allowNavigation": ["app.imaloo.com.au", "imaloo.com.au"],
+    "errorPath": "offline.html"
+  },
+  "android": { "allowMixedContent": false },
+  "ios": { "contentInset": "never" },
+  "plugins": {
+    "SplashScreen": { "launchShowDuration": 1500, "backgroundColor": "#FFD678", "showSpinner": false },
+    "StatusBar": { "overlaysWebView": false }
+  }
+}
