@@ -145,13 +145,6 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
 
 <section class="hero">
   <div class="scene">
-    <div class="walker" id="walker">
-      <button type="button" id="teddy-say" aria-label="Tap the teddy to hear hello">
-        <img src="img/teddy.png" alt="A real brown teddy bear walking down the forest path">
-      </button>
-      <div class="shadow"></div>
-    </div>
-    <div class="bubble" aria-hidden="true">Welcome to IMALOO! <small>Tap me to say hello</small></div>
   </div>
   <div class="hero-copy">
     <h1>Your child's toys <span>come to life</span></h1>
@@ -237,19 +230,3 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
   </nav>
 </div></footer>
 
-<script>
-// Tap the teddy: a little hop and a spoken hello (sound only starts after a tap).
-(function(){
-  var w=document.getElementById('walker'), b=document.getElementById('teddy-say');
-  b.addEventListener('click',function(){
-    w.classList.remove('hop'); void w.offsetWidth; w.classList.add('hop');
-    try{
-      speechSynthesis.cancel();
-      var u=new SpeechSynthesisUtterance('Welcome to IMALOO! Let\'s go on an adventure!');
-      var v=speechSynthesis.getVoices().find(function(x){return /en-AU/i.test(x.lang)})||speechSynthesis.getVoices().find(function(x){return /^en/i.test(x.lang)});
-      if(v)u.voice=v; u.pitch=1.5; u.rate=1.05; speechSynthesis.speak(u);
-    }catch(e){}
-  });
-  w.addEventListener('animationend',function(e){ if(e.animationName==='hop') w.classList.remove('hop'); });
-})();
-</script>
