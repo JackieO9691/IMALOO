@@ -1,0 +1,203 @@
+<title>IMALOO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="IMALOO brings your child's real toys to life in magical worlds, storybooks and movies they can watch on the TV.">
+<link rel="icon" href="img/icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+/* Layout: a sunlit storybook. Full-bleed forest hero with the real teddy, then soft bands: what kids do, worlds strip, safety, plans, footer. */
+:root{
+  --sun:#FFC94D; --sun-deep:#F29A1F; --leaf:#2F8F5B; --berry:#E8457A; --sky:#4FA9E8;
+  --bg:#FFFBF2; --band:#FFF1D6; --card:#FFFFFF; --ink:#3A2410; --muted:#7A5D40; --line:#F1DFC0;
+  --on-accent:#FFFFFF;
+  --display:"Fredoka","Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1D150E; --band:#2A1E13; --card:#33251A; --ink:#FFF4E2; --muted:#E0C9A8; --line:#4A3624; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1D150E; --band:#2A1E13; --card:#33251A; --ink:#FFF4E2; --muted:#E0C9A8; --line:#4A3624; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(28px,4vw,40px)}
+p{margin:0}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:19px;text-decoration:none;border-radius:999px;padding:14px 28px;border:0;cursor:pointer}
+.btn-main{background:var(--berry);color:var(--on-accent);box-shadow:0 5px 0 #B32A59}
+.btn-main:hover{transform:translateY(-1px)}
+.btn-soft{background:rgba(255,255,255,.92);color:#3A2410}
+.btn:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+
+/* top bar */
+.top{position:absolute;inset:0 0 auto;z-index:2}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:16px}
+.logo{font-family:var(--display);font-weight:700;font-size:28px;color:#fff;letter-spacing:.04em;text-shadow:0 2px 8px rgba(0,0,0,.35);text-decoration:none}
+.top .btn{font-size:16px;padding:10px 20px}
+
+/* hero */
+.hero{position:relative;color:#fff;background:#2b4a22 url(img/hero-forest.jpg) center/cover;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,20,5,.62),rgba(30,20,5,.15) 60%,rgba(0,0,0,0))}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;align-items:end;gap:24px;padding-block:120px 0}
+.hero-copy{padding-bottom:72px;display:grid;gap:20px;min-width:0}
+.hero h1{font-size:clamp(40px,6.5vw,72px);text-shadow:0 3px 14px rgba(0,0,0,.35)}
+.hero h1 span{color:var(--sun)}
+.hero p{font-size:20px;max-width:30em;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero small{opacity:.9}
+.hero-toy{justify-self:center;width:min(420px,90%);filter:drop-shadow(0 18px 18px rgba(0,0,0,.45));animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-1.5deg)}}
+@media (prefers-reduced-motion:reduce){.hero-toy{animation:none}}
+
+/* how it works */
+.how{padding-block:72px}
+.how h2{text-align:center;margin-bottom:36px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:24px;display:grid;gap:10px;align-content:start}
+.step .n{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:22px;color:var(--on-accent)}
+.step:nth-child(1) .n{background:var(--sky)} .step:nth-child(2) .n{background:var(--leaf)} .step:nth-child(3) .n{background:var(--berry)}
+.step h3{font-size:24px}
+.step p{color:var(--muted)}
+
+/* worlds */
+.worlds{background:var(--band);padding-block:64px}
+.worlds .head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.worlds .head p{color:var(--muted);max-width:32em}
+.wgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.wgrid figure{margin:0;border-radius:18px;overflow:hidden;position:relative;aspect-ratio:16/9;max-width:100%}
+.wgrid img{width:100%;height:100%;object-fit:cover;display:block}
+.wgrid figcaption{position:absolute;left:10px;bottom:8px;font-family:var(--display);font-weight:600;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.7)}
+
+/* more */
+.more{padding-block:72px}
+.more h2{margin-bottom:28px}
+.list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 40px}
+.item{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start}
+.item .ic{font-size:34px;line-height:1}
+.item h3{font-size:21px;margin-bottom:2px}
+.item p{color:var(--muted)}
+
+/* safety */
+.safe{background:var(--leaf);color:#fff;padding-block:64px}
+.safe .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.safe blockquote{margin:0;font-family:var(--display);font-size:clamp(24px,3vw,32px);line-height:1.25}
+.safe ul{margin:0;padding-left:22px;display:grid;gap:8px}
+.safe a{font-weight:700}
+
+/* plans */
+.plans{padding-block:72px}
+.plans h2{text-align:center}
+.plans .sub{text-align:center;color:var(--muted);margin:10px auto 32px;max-width:36em}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.plan{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:26px;display:grid;gap:12px;align-content:start}
+.plan.pop{border-color:var(--sun-deep)}
+.plan .tag{justify-self:start;background:var(--sun);color:#3A2410;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+.plan h3{font-size:24px}
+.price{font-family:var(--display);font-size:40px;font-weight:700;font-variant-numeric:tabular-nums}
+.price small{font-size:16px;font-weight:500;color:var(--muted)}
+.plan ul{margin:0;padding-left:20px;color:var(--muted)}
+.plans .trial{text-align:center;margin-top:28px;display:grid;gap:14px;justify-items:center}
+
+/* footer */
+footer{background:var(--band);padding-block:36px;color:var(--muted);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
+
+@media (max-width:820px){
+  .hero .wrap{grid-template-columns:1fr;padding-block:96px 0}
+  .hero-copy{padding-bottom:8px}
+  .hero-toy{width:min(260px,70%)}
+  .steps,.pgrid,.safe .wrap,.list{grid-template-columns:1fr}
+  .wgrid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#">IMALOO</a>
+  <a class="btn btn-soft" href="https://app.imaloo.com.au">Sign in</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="hero-copy">
+    <h1>Your child's toys <span>come to life</span></h1>
+    <p>Take a photo of a real teddy, doll or pony, and watch it wake up in bright, magical worlds. Make pictures, storybooks and little movies starring your child's very own toy.</p>
+    <div class="ctas">
+      <a class="btn btn-main" href="https://app.imaloo.com.au">Start your 7-day free trial</a>
+    </div>
+    <small>No card needed for the trial. Made in Australia.</small>
+  </div>
+  <img class="hero-toy" src="img/teddy.png" alt="A real brown teddy bear with a checked bow">
+</div></section>
+
+<section class="how"><div class="wrap">
+  <h2>As easy as one, two, three</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>Snap a toy</h3><p>A grown-up takes a photo of a real toy, front and back. Every photo is checked to make sure it's a toy.</p></div>
+    <div class="step"><div class="n">2</div><h3>Pick a world</h3><p>A sunny Aussie beach, a castle, outer space or a deep forest. Big picture buttons, so little ones can choose on their own.</p></div>
+    <div class="step"><div class="n">3</div><h3>Watch it come alive</h3><p>IMALOO makes a picture or a short movie with a story read aloud. Watch it big on the TV with the whole family.</p></div>
+  </div>
+</div></section>
+
+<section class="worlds"><div class="wrap">
+  <div class="head">
+    <h2>Dozens of worlds to explore</h2>
+    <p>From the Australian bush to the bottom of the sea, every world is bright, warm and full of little surprises.</p>
+  </div>
+  <div class="wgrid">
+    <figure><img src="img/w-castle.jpg" alt="A fairytale castle" loading="lazy"><figcaption>Castle</figcaption></figure>
+    <figure><img src="img/w-space.jpg" alt="Outer space with planets" loading="lazy"><figcaption>Space</figcaption></figure>
+    <figure><img src="img/w-aus-beach.jpg" alt="A sunny Australian beach" loading="lazy"><figcaption>Aussie Beach</figcaption></figure>
+    <figure><img src="img/w-dino-valley.jpg" alt="A friendly dinosaur valley" loading="lazy"><figcaption>Dinosaur Valley</figcaption></figure>
+    <figure><img src="img/w-ocean.jpg" alt="Under the sea" loading="lazy"><figcaption>Underwater</figcaption></figure>
+    <figure><img src="img/w-snow.jpg" alt="A snowy land" loading="lazy"><figcaption>Snow</figcaption></figure>
+    <figure><img src="img/w-farm.jpg" alt="A farm with a red barn" loading="lazy"><figcaption>Farm</figcaption></figure>
+    <figure><img src="img/w-pirate-island.jpg" alt="A pirate island" loading="lazy"><figcaption>Pirate Island</figcaption></figure>
+  </div>
+</div></section>
+
+<section class="more"><div class="wrap">
+  <h2>Play, learn and make together</h2>
+  <div class="list">
+    <div class="item"><div class="ic" aria-hidden="true">📚</div><div><h3>Storybooks</h3><p>Turn your pictures into a storybook with a happy ending. Tap Read to me, print it at home, or order a real printed book.</p></div></div>
+    <div class="item"><div class="ic" aria-hidden="true">📺</div><div><h3>Movies on the TV</h3><p>Every movie stars your child's own toys, and you can watch it on the big screen.</p></div></div>
+    <div class="item"><div class="ic" aria-hidden="true">🍎</div><div><h3>Fruit Maths</h3><p>Counting and simple adding that grows with your child, from 10 up to 50.</p></div></div>
+    <div class="item"><div class="ic" aria-hidden="true">🔤</div><div><h3>Read &amp; Spell</h3><p>15 words for each age, with letters that light up and a toy box to win.</p></div></div>
+    <div class="item"><div class="ic" aria-hidden="true">🎵</div><div><h3>Sing-along songs</h3><p>12 nursery songs with the words lighting up as they are sung.</p></div></div>
+    <div class="item"><div class="ic" aria-hidden="true">🖼️</div><div><h3>Posters</h3><p>Put your favourite picture in a rainbow, starry night or gold frame, from A5 to A3.</p></div></div>
+  </div>
+</div></section>
+
+<section class="safe"><div class="wrap">
+  <blockquote>Imaloo — where toys come to life and childhood stays innocent.</blockquote>
+  <div>
+    <ul>
+      <li>Only photos of toys are allowed. Photos of people, screens and magazines are refused.</li>
+      <li>Every picture and movie is checked before your child sees it.</li>
+      <li>No ads. Your family's toys, photos and movies are private to your family.</li>
+      <li>Grown-up settings for permissions and daily play time.</li>
+    </ul>
+    <p style="margin-top:16px"><a href="https://app.imaloo.com.au/safety">Read our Safety Promise</a> · <a href="https://app.imaloo.com.au/privacy">Privacy policy</a></p>
+  </div>
+</div></section>
+
+<section class="plans"><div class="wrap">
+  <h2>Simple family plans</h2>
+  <p class="sub">Every plan includes all the games, songs, spelling, maths and storybooks. Prices in Australian dollars, GST included. Cancel any time.</p>
+  <div class="pgrid">
+    <div class="plan"><h3>One child</h3><div class="price">$12.99<small> / month</small></div><ul><li>10 movies a month</li><li>60 pictures a month</li><li>Or $129 a year</li></ul></div>
+    <div class="plan pop"><span class="tag">Most popular</span><h3>Two children</h3><div class="price">$19.99<small> / month</small></div><ul><li>16 movies a month</li><li>100 pictures a month</li><li>Or $199 a year</li></ul></div>
+    <div class="plan"><h3>Family</h3><div class="price">$24.99<small> / month</small></div><ul><li>Up to 4 children</li><li>25 movies a month</li><li>150 pictures a month</li><li>Or $249 a year</li></ul></div>
+  </div>
+  <div class="trial">
+    <a class="btn btn-main" href="https://app.imaloo.com.au">Start your 7-day free trial</a>
+    <p style="color:var(--muted)">Coming soon to the App Store and Google Play.</p>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 IMALOO, by Ambience Care WA Pty Ltd</span>
+  <nav>
+    <a href="https://app.imaloo.com.au/safety">Safety</a>
+    <a href="https://app.imaloo.com.au/privacy">Privacy</a>
+    <span>Help: support@imaloo.com.au</span>
+  </nav>
+</div></footer>
