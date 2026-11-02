@@ -4,13 +4,27 @@
   "webDir": "www",
   "server": {
     "url": "https://app.imaloo.com.au",
-    "allowNavigation": ["app.imaloo.com.au", "imaloo.com.au"],
+    "allowNavigation": [
+      "app.imaloo.com.au",
+      "imaloo.com.au"
+    ],
     "errorPath": "offline.html"
   },
-  "android": { "allowMixedContent": false },
-  "ios": { "contentInset": "never" },
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "never"
+  },
   "plugins": {
-    "SplashScreen": { "launchShowDuration": 1500, "backgroundColor": "#FFD678", "showSpinner": false },
-    "StatusBar": { "overlaysWebView": false }
-  }
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#FFD678",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "overlaysWebView": false
+    }
+  },
+  "appendUserAgent": "IMALOOApp/1.0"
 }
