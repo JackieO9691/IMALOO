@@ -46,6 +46,8 @@ a{color:inherit}
 .hero small{opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 
 .teddy-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 65%;display:block}
+.hear{position:absolute;z-index:3;left:max(16px,env(safe-area-inset-left,0px));bottom:16px;font-size:18px;padding:12px 22px}
+@media (max-width:820px){.hear{font-size:15px;padding:9px 16px;bottom:10px}.replay{bottom:10px;font-size:14px;padding:8px 14px}}
 .replay{position:absolute;z-index:3;right:max(16px,env(safe-area-inset-right,0px));bottom:16px;font-size:16px;padding:10px 18px}
 /* the walking teddy: resting state = standing at the front of the path, waving hello */
 .walker{position:absolute;z-index:1;left:52%;bottom:3%;width:15%;transform:translateX(-50%);transform-origin:50% 100%;
@@ -149,6 +151,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
   <div class="scene">
     <video class="teddy-video" src="img/teddy-walk.mp4" poster="img/teddy-walk-poster.jpg" autoplay muted playsinline preload="auto" aria-label="A teddy bear comes to life and walks down the forest path to say hello"></video>
     <video class="teddy-video" id="teddy-play" src="img/teddy-play.mp4" muted playsinline loop preload="auto" hidden aria-label="The teddy bear waves, dances and claps in the forest"></video>
+    <video class="teddy-video" id="teddy-hello" src="img/teddy-hello.mp4" playsinline preload="auto" hidden aria-label="The teddy bear says: Hi! Come and play in our magic worlds on IMALOO!"></video>
+    <button class="btn btn-main hear" type="button" id="hear">🔊 Hear the teddy</button>
     <button class="btn btn-soft replay" type="button" id="replay" hidden>▶ Watch again</button>
   </div>
   <div class="hero-copy">
@@ -235,8 +239,14 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
   </nav>
 </div></footer>
 <script>
-// The teddy walks up, then keeps playing (waves, dances, claps) on a loop.
-(function(){var v=document.querySelector('.teddy-video'),p=document.getElementById('teddy-play'),r=document.getElementById('replay');
-v.addEventListener('ended',function(){p.hidden=false;p.currentTime=0;p.play().catch(function(){});v.hidden=true;r.hidden=false;});
-r.addEventListener('click',function(){p.pause();p.hidden=true;v.hidden=false;v.currentTime=0;v.play().catch(function(){});r.hidden=true;});})();
+// The teddy walks up, then keeps playing on a loop. "Hear the teddy" plays his hello with sound (browsers only allow sound after a tap).
+(function(){
+  var walk=document.querySelector('.teddy-video'),play=document.getElementById('teddy-play'),hello=document.getElementById('teddy-hello'),
+      hear=document.getElementById('hear'),replay=document.getElementById('replay');
+  function only(v){[walk,play,hello].forEach(function(x){if(x!==v){x.pause();x.hidden=true;}});v.hidden=false;v.currentTime=0;v.play().catch(function(){});}
+  walk.addEventListener('ended',function(){only(play);replay.hidden=false;});
+  hello.addEventListener('ended',function(){only(play);hear.hidden=false;});
+  hear.addEventListener('click',function(){hello.muted=false;hear.hidden=true;only(hello);});
+  replay.addEventListener('click',function(){replay.hidden=true;hear.hidden=false;only(walk);});
+})();
 </script>
