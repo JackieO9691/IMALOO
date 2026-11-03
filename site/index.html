@@ -45,6 +45,7 @@ a{color:inherit}
 .hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
 .hero small{opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 
+.teddy-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:49% 100%;display:block}
 /* the walking teddy: resting state = standing at the front of the path, waving hello */
 .walker{position:absolute;z-index:1;left:52%;bottom:3%;width:15%;transform:translateX(-50%);transform-origin:50% 100%;
   animation:walk 6s cubic-bezier(.45,.05,.55,.95) .4s both}
@@ -145,6 +146,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
 
 <section class="hero">
   <div class="scene">
+    <video class="teddy-video" src="img/teddy-walk.mp4" poster="img/teddy-walk-poster.jpg" autoplay muted playsinline preload="auto" aria-label="A teddy bear comes to life and walks down the forest path to say hello"></video>
   </div>
   <div class="hero-copy">
     <h1>Your child's toys <span>come to life</span></h1>
