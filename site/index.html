@@ -148,6 +148,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
 <section class="hero">
   <div class="scene">
     <video class="teddy-video" src="img/teddy-walk.mp4" poster="img/teddy-walk-poster.jpg" autoplay muted playsinline preload="auto" aria-label="A teddy bear comes to life and walks down the forest path to say hello"></video>
+    <video class="teddy-video" id="teddy-play" src="img/teddy-play.mp4" muted playsinline loop preload="auto" hidden aria-label="The teddy bear waves, dances and claps in the forest"></video>
     <button class="btn btn-soft replay" type="button" id="replay" hidden>▶ Watch again</button>
   </div>
   <div class="hero-copy">
@@ -234,7 +235,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
   </nav>
 </div></footer>
 <script>
-(function(){var v=document.querySelector('.teddy-video'),r=document.getElementById('replay');
-v.addEventListener('ended',function(){r.hidden=false;});
-r.addEventListener('click',function(){r.hidden=true;v.currentTime=0;v.play();});})();
+// The teddy walks up, then keeps playing (waves, dances, claps) on a loop.
+(function(){var v=document.querySelector('.teddy-video'),p=document.getElementById('teddy-play'),r=document.getElementById('replay');
+v.addEventListener('ended',function(){p.hidden=false;p.currentTime=0;p.play().catch(function(){});v.hidden=true;r.hidden=false;});
+r.addEventListener('click',function(){p.pause();p.hidden=true;v.hidden=false;v.currentTime=0;v.play().catch(function(){});r.hidden=true;});})();
 </script>
