@@ -7,7 +7,7 @@ android {
         applicationId "au.com.imaloo.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode((System.getenv("BUILD_NUMBER") ?: "1") as Integer)
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -16,8 +16,20 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        // Upload key comes from GitHub secrets in the cloud build; never stored in the code.
+        if (System.getenv("IMALOO_KEYSTORE")) {
+            upload {
+                storeFile file(System.getenv("IMALOO_KEYSTORE"))
+                storePassword System.getenv("IMALOO_KEYSTORE_PASSWORD")
+                keyAlias "imaloo"
+                keyPassword System.getenv("IMALOO_KEYSTORE_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
+            if (System.getenv("IMALOO_KEYSTORE")) { signingConfig signingConfigs.upload }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

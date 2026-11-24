@@ -19,7 +19,21 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 21 }
       - run: npm ci && npx cap sync android
+      - name: Use the Play upload key if it is set up
+        env:
+          KS: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -n "$KS" ]; then
+            echo "$KS" | base64 -d > $RUNNER_TEMP/upload.jks
+            echo "IMALOO_KEYSTORE=$RUNNER_TEMP/upload.jks" >> $GITHUB_ENV
+            echo "IMALOO_KEYSTORE_PASSWORD=$KS_PASS" >> $GITHUB_ENV
+          fi
       - run: cd android && ./gradlew assembleDebug bundleRelease
+        env: { BUILD_NUMBER: '${{ github.run_number }}' }
+      - name: Remove the key
+        if: always()
+        run: rm -f $RUNNER_TEMP/upload.jks
       - uses: actions/upload-artifact@v4
         with:
           name: imaloo-android
