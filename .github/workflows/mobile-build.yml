@@ -88,6 +88,22 @@ jobs:
           ' > ~/private_keys/AuthKey_$KEY_ID.p8
           echo "KEY_PATH=$HOME/private_keys/AuthKey_$KEY_ID.p8" >> $GITHUB_ENV
       - run: npm ci && npx cap sync ios
+      - name: Check Apple has the IMALOO app set up
+        run: |
+          pip3 install -q --break-system-packages pyjwt cryptography 2>/dev/null || pip3 install -q pyjwt cryptography
+          python3 - <<'PY'
+          import os, time, json, jwt, urllib.request
+          tok = jwt.encode({"iss": os.environ["ISSUER"], "iat": int(time.time()), "exp": int(time.time()) + 600, "aud": "appstoreconnect-v1"},
+                           open(os.environ["KEY_PATH"]).read(), algorithm="ES256", headers={"kid": os.environ["KEY_ID"]})
+          def get(path):
+              r = urllib.request.Request("https://api.appstoreconnect.apple.com" + path, headers={"Authorization": "Bearer " + tok})
+              return json.load(urllib.request.urlopen(r))
+          ids = get("/v1/bundleIds?filter[identifier]=au.com.imaloo.app")["data"]
+          apps = get("/v1/apps?filter[bundleId]=au.com.imaloo.app")["data"]
+          print("App ID registered:", bool(ids), "| App Store Connect app made:", bool(apps))
+          for a in apps: print("App name:", a["attributes"]["name"])
+          if not apps: raise SystemExit("The IMALOO app is not set up in App Store Connect yet (Apps > + > New App, bundle ID au.com.imaloo.app).")
+          PY
       # Build unsigned first; the upload step signs it for the App Store with Apple's
       # cloud certificates (no test devices or Mac needed).
       - name: Build the app
@@ -116,6 +132,11 @@ jobs:
             -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist -exportPath $RUNNER_TEMP/export \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" 2>&1 | tail -80
+      - name: Show Apple's upload log if it failed
+        if: failure()
+        run: |
+          for f in $(find /var/folders "$TMPDIR" -path '*xcdistributionlogs*' -name '*.log' 2>/dev/null | sort -u); do
+            echo "=== $f"; grep -v '^\s*$' "$f" | grep -iE 'error|fail|denied|not found|unable|could not|status' | tail -40; done
       - name: Remove the key
         if: always()
         run: rm -rf ~/private_keys
