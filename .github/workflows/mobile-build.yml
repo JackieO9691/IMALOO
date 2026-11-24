@@ -77,7 +77,15 @@ jobs:
         run: |
           [ -n "$P8" ] || { echo "Missing secret ASC_KEY_P8"; exit 1; }
           mkdir -p ~/private_keys
-          printf '%s\n' "$P8" > ~/private_keys/AuthKey_$KEY_ID.p8
+          # Tidy the pasted key (Windows line endings, missing or squashed header lines) into a clean PEM file.
+          printf '%s' "$P8" | python3 -c '
+          import sys, re, textwrap
+          t = sys.stdin.read().replace("\r", "")
+          t = re.sub(r"-----(BEGIN|END) [A-Z ]*-----", " ", t)
+          b = re.sub(r"[^A-Za-z0-9+/=]", "", t)
+          print("key text found:", len(b), "characters (a real key is about 200)", file=sys.stderr)
+          print("-----BEGIN PRIVATE KEY-----"); print("\n".join(textwrap.wrap(b, 64))); print("-----END PRIVATE KEY-----")
+          ' > ~/private_keys/AuthKey_$KEY_ID.p8
           echo "KEY_PATH=$HOME/private_keys/AuthKey_$KEY_ID.p8" >> $GITHUB_ENV
       - run: npm ci && npx cap sync ios
       - name: Build and sign (Apple makes the certificates automatically)
