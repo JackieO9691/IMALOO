@@ -99,6 +99,12 @@ jobs:
               r = urllib.request.Request("https://api.appstoreconnect.apple.com" + path, headers={"Authorization": "Bearer " + tok})
               return json.load(urllib.request.urlopen(r))
           ids = get("/v1/bundleIds?filter[identifier]=au.com.imaloo.app")["data"]
+          if not ids:
+              body = json.dumps({"data": {"type": "bundleIds", "attributes": {"identifier": "au.com.imaloo.app", "name": "IMALOO", "platform": "IOS"}}}).encode()
+              r = urllib.request.Request("https://api.appstoreconnect.apple.com/v1/bundleIds", data=body, method="POST",
+                                         headers={"Authorization": "Bearer " + tok, "Content-Type": "application/json"})
+              urllib.request.urlopen(r); print("Registered the App ID au.com.imaloo.app")
+              ids = get("/v1/bundleIds?filter[identifier]=au.com.imaloo.app")["data"]
           apps = get("/v1/apps?filter[bundleId]=au.com.imaloo.app")["data"]
           print("App ID registered:", bool(ids), "| App Store Connect app made:", bool(apps))
           for a in apps: print("App name:", a["attributes"]["name"])
