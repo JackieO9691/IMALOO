@@ -3,6 +3,11 @@ on:
   push:
     paths: ['mobile/**', '.github/workflows/mobile-build.yml']
   workflow_dispatch:
+    inputs:
+      testflight:
+        description: 'Also sign the iPhone app and send it to TestFlight'
+        type: boolean
+        default: false
 jobs:
   android:
     runs-on: ubuntu-latest
@@ -34,3 +39,61 @@ jobs:
           xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Debug \
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_ALLOWED=NO build | tail -20
+
+  # Signed iPhone build sent to TestFlight. Runs only when started by hand with "testflight" ticked.
+  # Needs these repository secrets (never put them in the code):
+  #   APPLE_TEAM_ID, ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (the whole text of the AuthKey .p8 file)
+  ios-testflight:
+    if: github.event_name == 'workflow_dispatch' && inputs.testflight
+    runs-on: macos-15
+    defaults: { run: { working-directory: mobile } }
+    env:
+      TEAM: ${{ secrets.APPLE_TEAM_ID }}
+      KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ISSUER: ${{ secrets.ASC_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Check the Apple secrets are there
+        run: |
+          for v in TEAM KEY_ID ISSUER; do [ -n "${!v}" ] || { echo "Missing secret for $v"; exit 1; }; done
+      - name: Put the App Store Connect key in place
+        env: { P8: '${{ secrets.ASC_KEY_P8 }}' }
+        run: |
+          [ -n "$P8" ] || { echo "Missing secret ASC_KEY_P8"; exit 1; }
+          mkdir -p ~/private_keys
+          printf '%s\n' "$P8" > ~/private_keys/AuthKey_$KEY_ID.p8
+          echo "KEY_PATH=$HOME/private_keys/AuthKey_$KEY_ID.p8" >> $GITHUB_ENV
+      - run: npm ci && npx cap sync ios
+      - name: Build and sign (Apple makes the certificates automatically)
+        run: |
+          set -o pipefail
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath $RUNNER_TEMP/IMALOO.xcarchive \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" \
+            DEVELOPMENT_TEAM="$TEAM" CODE_SIGN_STYLE=Automatic \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            archive 2>&1 | tail -80
+      - name: Send to App Store Connect (TestFlight)
+        run: |
+          set -o pipefail
+          cat > $RUNNER_TEMP/ExportOptions.plist <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
+          PLIST
+          xcodebuild -exportArchive -archivePath $RUNNER_TEMP/IMALOO.xcarchive \
+            -exportOptionsPlist $RUNNER_TEMP/ExportOptions.plist -exportPath $RUNNER_TEMP/export \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$KEY_PATH" -authenticationKeyID "$KEY_ID" -authenticationKeyIssuerID "$ISSUER" 2>&1 | tail -80
+      - name: Remove the key
+        if: always()
+        run: rm -rf ~/private_keys
