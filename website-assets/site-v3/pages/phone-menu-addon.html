@@ -21,6 +21,7 @@ body.menu-open{overflow:hidden}
 @media (max-width:820px){.menu{display:none !important}.menubtn{display:inline-flex}.top .signin{display:none !important}.top .wrap{flex-wrap:nowrap}
   .sec{padding-block:44px}.cta{padding-block:40px}h2{font-size:clamp(26px,7vw,34px)}.imaloo-page{font-size:16px}
   .game .phone,.game.alt .phone{display:none}}
+.toyroom{width:1.3em;height:1.3em;border-radius:.3em;object-fit:cover;vertical-align:-.28em;display:inline-block;box-shadow:0 2px 6px rgba(59,35,87,.2)}
 @media (prefers-reduced-motion:reduce){.pgrid2 a{animation:none}}
 </style>
 <script>
@@ -67,6 +68,26 @@ body.menu-open{overflow:hidden}
     var nt=el('span');nt.appendChild(el('small','','Next page'));nt.appendChild(document.createTextNode(n[2]+' ▶'));na.appendChild(nt);box.appendChild(na);
     var foot=host.querySelector('footer');
     if(foot)host.insertBefore(box,foot);else host.appendChild(box);
+  }
+})();
+// Jackie asked for a little toy room picture instead of the game controller emoji (2026-11-26).
+(function(){
+  var root=document.querySelector('.imaloo-page');
+  if(!root)return;
+  var pad='🎮',src='/wp-content/uploads/2026/11/imaloo-toy-room-icon.webp';
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),list=[],t;
+  while((t=w.nextNode())){
+    var p=t.parentNode.nodeName;
+    if(p==='SCRIPT')continue;if(p==='STYLE')continue;
+    if(t.data.indexOf(pad)!==-1)list.push(t);
+  }
+  for(var i=0;list.length>i;i++){
+    var parts=list[i].data.split(pad),f=document.createDocumentFragment();
+    for(var k=0;parts.length>k;k++){
+      if(k){var im=document.createElement('img');im.src=src;im.alt='';im.className='toyroom';im.width=64;im.height=64;f.appendChild(im);}
+      if(parts[k])f.appendChild(document.createTextNode(parts[k]));
+    }
+    list[i].parentNode.replaceChild(f,list[i]);
   }
 })();
 </script>
