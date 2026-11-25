@@ -257,7 +257,7 @@ HOME_HTML = """
   <h2>Come and explore ✨</h2>
   <p class="sub">Tap a door to step inside.</p>
   <div class="doors">
-    <a class="door" href="/games/"><div class="pic" style="background-image:url(/wp-content/uploads/2026/11/imaloo-fruit-garden.jpg)"><span class="badge" aria-hidden="true">🎮</span></div><div class="lbl"><h3>Games</h3><p>Count the fruit, spell with real-looking animals and sing along. Try them right here!</p><span class="go">Play now ▶</span></div></a>
+    <a class="door" href="/games/"><div class="pic" style="background-image:url(/wp-content/uploads/2026/11/imaloo-fruit-garden.jpg)"><span class="badge" aria-hidden="true">🎮</span></div><div class="lbl"><h3>Games</h3><p>Catch Party bubbles, Fruit Maths, Read &amp; Spell and sing-along songs. Try them right here!</p><span class="go">Play now ▶</span></div></a>
     <a class="door" href="/books/"><div class="pic" style="background-image:url(/wp-content/uploads/2026/11/book-5-surprise.jpg)"><span class="badge" aria-hidden="true">📚</span></div><div class="lbl"><h3>Books</h3><p>Storybooks starring your child's own toys, read aloud by a bubbly storyteller.</p><span class="go">Open the books ▶</span></div></a>
     <a class="door" href="/fantasy-lands/"><div class="pic"><video src="https://videos.files.wordpress.com/B3Ra78yb/w-castle.mp4" poster="/wp-content/uploads/2026/11/w-castle.jpg" autoplay muted loop playsinline preload="metadata" aria-label="A fairytale castle"></video><span class="badge" aria-hidden="true">🏰</span></div><div class="lbl"><h3>Fantasy Lands</h3><p>54 bright, magical places, from the Aussie bush to a castle in the clouds.</p><span class="go">Explore ▶</span></div></a>
   </div>
@@ -319,9 +319,9 @@ JS_TEDDY = r"""
 # ---------------- GAMES ----------------
 GAMES_CSS = r"""
 .game{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:center;padding-block:56px}
-.game:nth-of-type(even){grid-template-columns:1fr 260px}.game:nth-of-type(even) .phone{order:2}
+.game.alt{grid-template-columns:1fr 260px}.game.alt .phone{order:2}
 .phone{position:relative;border-radius:38px;background:#2b1d40;padding:10px;box-shadow:0 20px 50px rgba(59,35,87,.3);transform:rotate(-3deg);transition:transform .3s}
-.phone:hover{transform:rotate(0) scale(1.03)}.game:nth-of-type(even) .phone{transform:rotate(3deg)}
+.phone:hover{transform:rotate(0) scale(1.03)}.game.alt .phone{transform:rotate(3deg)}
 .phone img{display:block;border-radius:30px;width:100%;aspect-ratio:1/2;object-fit:cover}
 .gtext h2{text-align:left;font-size:clamp(28px,3.6vw,40px)}.gtext .lead{color:var(--muted);margin:8px 0 16px}
 .gtext ul{margin:0 0 18px;padding-left:22px;color:var(--muted)}
@@ -333,6 +333,38 @@ GAMES_CSS = r"""
 .play .start .btn{animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 .say{position:relative;z-index:2;margin:14px auto 0;width:max-content;max-width:calc(100% - 28px);background:rgba(255,255,255,.95);border-radius:999px;padding:8px 18px;font-family:var(--display);font-weight:600;font-size:clamp(17px,2.2vw,21px);color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.12);text-align:center}
+
+/* Catch Party */
+.cp-sec{padding-block:56px 24px}
+.cp-head{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;margin-bottom:18px}
+.cp-head h2{text-align:left;font-size:clamp(30px,4vw,44px)}.cp-head .lead{color:var(--muted);margin-top:8px;max-width:40em}
+.new{display:inline-block;background:linear-gradient(135deg,#FFD23F,#FF8A3D);color:#fff;font-family:var(--display);font-weight:700;font-size:15px;border-radius:999px;padding:4px 12px;margin-left:8px;vertical-align:middle;animation:pulse 1.6s ease-in-out infinite}
+#cp{aspect-ratio:16/9;min-height:420px;max-height:640px;background:#bfe6ff center/cover no-repeat;transition:background-image .6s}
+#cp-layer{position:absolute;inset:0;z-index:2;overflow:hidden}
+.f{position:absolute;bottom:-120px;border:0;padding:0;background:none;cursor:pointer;animation:rise linear forwards;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.f i{display:block;width:100%;height:100%}
+.bub i{border-radius:50%;border:2px solid #ffffffcc;background:radial-gradient(circle at 30% 28%,#fffffff0 0 8%,#bfe6ffaa 20%,#9fd8ff55 45%,#c9a2ff55 72%,#ffffff88 100%);box-shadow:inset -6px -8px 14px #ffffff55}
+.itm i{background-image:url(/wp-content/uploads/2026/11/imaloo-catch-items.webp);background-size:800% 100%;filter:drop-shadow(0 6px 6px rgba(0,0,0,.35));animation:sway 1.3s ease-in-out infinite}
+.itm.flut i{animation:flut .35s ease-in-out infinite alternate}
+@keyframes rise{to{transform:translateY(calc(-1 * var(--h,500px) - 160px)) translateX(var(--dx,20px))}}
+@keyframes sway{50%{transform:translateX(10px) rotate(8deg)}}
+@keyframes flut{to{transform:scaleX(.82) rotate(-6deg)}}
+.drop{position:absolute;z-index:6;pointer-events:none;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,#d8f1ffdd 40%,#a9d8ffaa 70%,#c9a2ff88 100%);animation:conf .7s ease-out forwards}
+.flyer{position:absolute;z-index:7;pointer-events:none;background-image:url(/wp-content/uploads/2026/11/imaloo-catch-items.webp);background-size:800% 100%;transition:all .65s cubic-bezier(.5,-.3,.6,1)}
+.jar{position:absolute;z-index:4;right:14px;bottom:14px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.92);border-radius:999px;padding:6px 16px 6px 8px;box-shadow:0 6px 16px rgba(0,0,0,.18);font-family:var(--display);font-weight:700;font-size:28px;color:var(--ink)}
+.jar i{width:46px;height:46px;background-image:url(/wp-content/uploads/2026/11/imaloo-catch-items.webp);background-size:800% 100%}
+.jar.bump{animation:hop .4s ease}
+.cp-top{position:absolute;z-index:4;left:0;right:0;top:12px;display:flex;justify-content:center;pointer-events:none}
+.cp-top .say{margin:0;pointer-events:none}
+.banner{position:absolute;z-index:5;left:50%;top:40%;transform:translate(-50%,-50%) scale(.6);opacity:0;pointer-events:none;font-family:var(--display);font-weight:700;font-size:clamp(34px,6vw,64px);color:#fff;text-shadow:0 4px 18px rgba(80,20,120,.6);transition:all .35s;white-space:nowrap}
+.banner.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.cp-btns{position:absolute;z-index:4;left:14px;bottom:14px;display:flex;gap:8px}
+.cp-btns .btn{font-size:15px;padding:8px 14px}
+.cp-end{position:absolute;inset:0;z-index:6;display:grid;place-items:center;align-content:center;gap:14px;text-align:center;padding:16px;background:rgba(59,35,87,.45);color:#fff;font-family:var(--display)}
+.cp-end b{font-size:clamp(24px,3.4vw,36px);text-shadow:0 2px 10px rgba(0,0,0,.4);max-width:20em}
+.cp-start .rounds{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.cp-start .rounds i{width:54px;height:54px;border-radius:16px;background-color:rgba(255,255,255,.85);background-image:url(/wp-content/uploads/2026/11/imaloo-catch-items.webp);background-size:800% 100%}
+@media (max-width:820px){.cp-head{grid-template-columns:1fr}#cp{aspect-ratio:auto;height:520px;min-height:0}.jar{font-size:22px}.jar i{width:36px;height:36px}}
 /* Fruit Maths */
 #fm{background:url(/wp-content/uploads/2026/11/imaloo-fruit-garden.jpg) center/cover}
 .rug{position:relative;z-index:2;margin:18px auto 0;width:min(92%,560px);min-height:130px;border-radius:24px;background:repeating-linear-gradient(45deg,#ff6b81 0 18px,#fff 18px 36px);box-shadow:0 8px 20px rgba(0,0,0,.18);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:12px}
@@ -372,18 +404,34 @@ GAMES_CSS = r"""
 .note{position:absolute;z-index:1;bottom:-30px;font-size:30px;animation:rise 4s linear forwards;pointer-events:none}
 @keyframes rise{to{transform:translateY(-420px) rotate(30deg);opacity:0}}
 .stopbar{position:relative;z-index:2;text-align:center;padding-bottom:16px}
-@media (max-width:820px){.game,.game:nth-of-type(even){grid-template-columns:1fr;gap:24px;padding-block:40px}.game:nth-of-type(even) .phone{order:0}.phone{width:200px;margin:0 auto}.gtext h2{text-align:center}.gtext .lead{text-align:center}}
+@media (max-width:820px){.game,.game.alt{grid-template-columns:1fr;gap:24px;padding-block:40px}.game.alt .phone{order:0}.phone{width:200px;margin:0 auto}.gtext h2{text-align:center}.gtext .lead{text-align:center}}
 """
 
 def games_html():
     return """
 <section class="band">
-  <span class="floaty" style="left:6%;top:24%" aria-hidden="true">🍓</span><span class="floaty" style="right:7%;top:20%;animation-delay:1s" aria-hidden="true">🔤</span><span class="floaty" style="left:16%;bottom:22%;animation-delay:2s" aria-hidden="true">🎵</span><span class="floaty" style="right:16%;bottom:26%;animation-delay:3s" aria-hidden="true">⭐</span>
+  <span class="floaty" style="left:6%;top:24%" aria-hidden="true">🍓</span><span class="floaty" style="right:7%;top:20%;animation-delay:1s" aria-hidden="true">🔤</span><span class="floaty" style="left:16%;bottom:22%;animation-delay:2s" aria-hidden="true">🫧</span><span class="floaty" style="right:16%;bottom:26%;animation-delay:3s" aria-hidden="true">⭐</span>
   <h1>🎮 Games kids love</h1>
   <p>Learning that feels like play. Every game is in the IMALOO app, and you can try a little taste of each one right here. Turn your sound on!</p>
 </section>
 
 <div class="wrap">
+<section class="cp-sec" id="catch-party">
+  <div class="cp-head"><div>
+    <h2>🎉 Catch Party <span class="new">NEW!</span></h2>
+    <p class="lead">Bubbles float up through bright, magical worlds. Catch the butterflies, trucks, puppies, fairies, candy and bees, and pop the bubbles! A bubbly storyteller tells children what to catch next. In the app, it's also the fun little game to play while their movie is being made.</p>
+  </div></div>
+  <div class="play" id="cp">
+    <div id="cp-layer"></div>
+    <div class="cp-top"><div class="say" id="cp-say">Catch the butterflies!</div></div>
+    <div class="banner" id="cp-banner"></div>
+    <div class="jar" id="cp-jar" aria-live="polite"><i id="cp-jar-img"></i><span id="cp-count">0</span></div>
+    <div class="cp-btns" id="cp-btns" hidden><button class="btn btn-soft" type="button" id="cp-next">Next ▶</button><button class="btn btn-soft" type="button" id="cp-stop">⏹ Stop</button></div>
+    <div class="start cp-start" id="cp-start"><b>Catch what the storyteller asks for!</b><div class="rounds" aria-hidden="true"><i style="background-position:0 0"></i><i style="background-position:14.286% 0"></i><i style="background-position:28.571% 0"></i><i style="background-position:42.857% 0"></i><i style="background-position:57.143% 0"></i><i style="background-position:71.429% 0"></i><i style="background-position:85.714% 0"></i></div><button class="btn btn-main" type="button">🔊 Tap to play</button></div>
+    <div class="cp-end" id="cp-end" hidden><b id="cp-msg"></b><button class="btn btn-main" type="button" id="cp-again">🎉 Play again</button></div>
+  </div>
+</section>
+
 <section class="game" id="fruit-maths">
   <div class="phone"><img src="/wp-content/uploads/2026/11/imaloo-shot-fruit-maths.jpg" alt="Fruit Maths Party in the IMALOO app" loading="lazy"></div>
   <div class="gtext">
@@ -401,7 +449,7 @@ def games_html():
   </div>
 </section>
 
-<section class="game" id="read-and-spell">
+<section class="game alt" id="read-and-spell">
   <div class="phone"><img src="/wp-content/uploads/2026/11/imaloo-shot-read-and-spell.jpg" alt="Read and Spell in the IMALOO app" loading="lazy"></div>
   <div class="gtext">
     <h2>🔤 Read &amp; Spell</h2>
@@ -436,7 +484,7 @@ def games_html():
 
 <section class="sec tint"><div class="wrap" style="text-align:center">
   <h2>All the games are in every plan</h2>
-  <p class="sub">Fruit Maths, Read &amp; Spell and Songs are unlimited, with no ads. Little ones choose with big picture buttons, so there's hardly any reading needed.</p>
+  <p class="sub">Catch Party, Fruit Maths, Read &amp; Spell and Songs are unlimited, with no ads. Little ones choose with big picture buttons, so there's hardly any reading needed.</p>
   <a class="btn btn-main" href="https://app.imaloo.com.au">Start your 7-day free trial</a>
 </div></section>
 """
@@ -465,10 +513,99 @@ function imalooVoice(src,lines){
   return {
     unlock:function(){if(unlocked)return;unlocked=true;var p=a.play();if(p){if(p.then){p.then(function(){if(!busy)a.pause();}).catch(function(){});}}},
     say:function(keys,done){stop();keys.forEach(function(k,n){queue.push({k:k,cb:(n===keys.length-1)?done:null});});nextLine();},
-    stop:stop
+    stop:stop,
+    idle:function(){return !busy;}
   };
 }
 function imalooShuffle(arr){for(var k=arr.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=arr[k];arr[k]=arr[j];arr[j]=t;}return arr;}
+
+// Catch Party: tap the things the storyteller asks for, and pop the bubbles.
+(function(){
+  var box=document.getElementById('cp');if(!box)return;
+  var V=imalooVoice('/wp-content/uploads/2026/11/imaloo-catch-voice.mp3',""" + json.dumps(SP['cp'], separators=(',', ':')) + r""");
+  var S=imalooVoice('/wp-content/uploads/2026/11/imaloo-catch-sfx.mp3',""" + json.dumps(SP['cps'], separators=(',', ':')) + r""");
+  var U='/wp-content/uploads/2026/11/imaloo-catch-';
+  var T=[
+    {id:'butterfly',many:'butterflies',word:'Butterflies!',img:[0],flut:true},
+    {id:'truck',many:'trucks',word:'Trucks!',img:[1]},
+    {id:'puppy',many:'puppies',word:'Puppies!',img:[2]},
+    {id:'fairy',many:'fairies',word:'Fairies!',img:[3]},
+    {id:'candy',many:'candy',word:'Candy!',img:[4,7]},
+    {id:'bubble',many:'bubbles',word:'Bubbles!',img:[5],only:true},
+    {id:'bee',many:'bees',word:'Bees!',img:[6],flut:true}
+  ];
+  T.forEach(function(t){var im=new Image();im.src=U+t.id+'.jpg';});
+  var layer=document.getElementById('cp-layer'),say=document.getElementById('cp-say'),banner=document.getElementById('cp-banner'),jarImg=document.getElementById('cp-jar-img'),countEl=document.getElementById('cp-count'),jar=document.getElementById('cp-jar'),btns=document.getElementById('cp-btns'),start=document.getElementById('cp-start'),end=document.getElementById('cp-end'),msg=document.getElementById('cp-msg');
+  var cur=0,caught={},spawnT=null,roundT=null,playing=false;
+  function pos(k){return (k*100/7)+'% 0';}
+  function setTheme(i){cur=i;var t=T[i];box.style.backgroundImage='url('+U+t.id+'.jpg)';jarImg.style.backgroundPosition=pos(t.img[0]);countEl.textContent=caught[t.id]||0;}
+  setTheme(0);
+  function add(){
+    if(!playing)return;if(layer.childElementCount>11)return;
+    var t=T[cur],item=t.only?false:(0.42>Math.random()),W=box.clientWidth,H=box.clientHeight;
+    var size=item?W*(0.13+Math.random()*0.05):W*(0.1+Math.random()*0.07);
+    size=Math.max(item?70:56,Math.min(size,item?150:130));
+    var b=document.createElement('button');b.type='button';b.className='f '+(item?('itm'+(t.flut?' flut':'')):'bub');
+    b.setAttribute('aria-label',item?('Catch the '+t.many):'Bubble');
+    b.style.width=size+'px';b.style.height=size+'px';b.style.left=(2+Math.random()*(96-size/W*100-2))+'%';
+    b.style.animationDuration=(7+Math.random()*3)+'s';b.style.setProperty('--h',H+'px');b.style.setProperty('--dx',(Math.random()*40-20).toFixed(0)+'px');
+    var k=t.img[Math.floor(Math.random()*t.img.length)];b.setAttribute('data-k',k);
+    var ic=document.createElement('i');if(item)ic.style.backgroundPosition=pos(k);b.appendChild(ic);
+    b.addEventListener('pointerdown',function(e){e.preventDefault();hit(b,item,t);});
+    b.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();hit(b,item,t);}});
+    b.addEventListener('animationend',function(e){if(e.target===b)b.remove();});
+    layer.appendChild(b);
+  }
+  function bump(t){caught[t.id]=(caught[t.id]||0)+1;countEl.textContent=caught[t.id];jar.classList.remove('bump');void jar.offsetWidth;jar.classList.add('bump');}
+  function hit(b,item,t){
+    if(b.getAttribute('data-done'))return;b.setAttribute('data-done','1');
+    var r=b.getBoundingClientRect(),q=box.getBoundingClientRect(),x=r.left-q.left+r.width/2,y=r.top-q.top+r.height/2;
+    b.remove();
+    if(!item){
+      for(var n=0;14>n;n++){var d=document.createElement('i');d.className='drop';var a=Math.random()*6.283,dist=r.width*0.3+Math.random()*r.width*0.5,sz=4+Math.random()*8;
+        d.style.left=(x-sz/2)+'px';d.style.top=(y-sz/2)+'px';d.style.width=sz+'px';d.style.height=sz+'px';d.style.setProperty('--x',(Math.cos(a)*dist)+'px');d.style.setProperty('--y',(Math.sin(a)*dist)+'px');d.style.setProperty('--r','0deg');
+        box.appendChild(d);(function(el){setTimeout(function(){el.remove();},750);})(d);}
+      S.say(['pop']);
+      if(t.only)bump(t);
+      if(V.idle()){if(0.25>Math.random())V.say(['pop-'+(1+Math.floor(Math.random()*3))]);}
+      return;
+    }
+    imalooConfetti(box,x,y);
+    var f=document.createElement('div');f.className='flyer';f.style.left=(x-r.width/2)+'px';f.style.top=(y-r.height/2)+'px';f.style.width=r.width+'px';f.style.height=r.height+'px';f.style.backgroundPosition=pos(+b.getAttribute('data-k'));box.appendChild(f);
+    var j=jarImg.getBoundingClientRect();
+    requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.left=(j.left-q.left)+'px';f.style.top=(j.top-q.top)+'px';f.style.width=j.width+'px';f.style.height=j.height+'px';f.style.opacity='.4';});});
+    setTimeout(function(){f.remove();bump(t);},650);
+    S.say([t.id]);
+    if(V.idle()){if(0.5>Math.random())V.say(['catch-'+t.id]);else if(0.3>Math.random())V.say(['yay-'+(1+Math.floor(Math.random()*4))]);}
+  }
+  function switchTo(i){
+    [].forEach.call(layer.querySelectorAll('.itm'),function(x){x.setAttribute('data-done','1');x.style.transition='opacity .4s';x.style.opacity='0';setTimeout(function(){x.remove();},400);});
+    setTheme(i);var t=T[i];V.say(['now-'+t.id]);
+    banner.textContent='Now… '+t.many+'!';banner.classList.add('on');setTimeout(function(){banner.classList.remove('on');},2400);
+    say.textContent='Ooh! Catch the '+t.many+'!';
+    clearTimeout(roundT);roundT=setTimeout(function(){switchTo((cur+1)%T.length);},20000);
+  }
+  function go(){
+    playing=true;end.hidden=true;btns.hidden=false;
+    var t=T[cur];say.textContent=t.word+' Collect as many '+t.many+' as you can!';
+    V.say(['start-'+t.id]);
+    clearInterval(spawnT);spawnT=setInterval(add,750);add();
+    clearTimeout(roundT);roundT=setTimeout(function(){switchTo((cur+1)%T.length);},20000);
+  }
+  function stop(){
+    playing=false;clearInterval(spawnT);clearTimeout(roundT);layer.textContent='';btns.hidden=true;
+    var parts=T.filter(function(t){return caught[t.id];}).map(function(t){return caught[t.id]+' '+(t.id==='candy'?'sweet treats':t.many);});
+    var text='What a great game!';
+    if(parts.length){text='You caught '+(parts.length>1?parts.slice(0,-1).join(', ')+' and '+parts[parts.length-1]:parts[0])+'!';}
+    msg.textContent=text+' 🎉';end.hidden=false;V.say(['yay-'+(1+Math.floor(Math.random()*4))]);
+    var q=box.getBoundingClientRect();imalooConfetti(box,q.width/2,q.height/2);
+  }
+  document.getElementById('cp-next').addEventListener('click',function(){switchTo((cur+1)%T.length);});
+  document.getElementById('cp-stop').addEventListener('click',stop);
+  document.getElementById('cp-again').addEventListener('click',function(){caught={};setTheme(Math.floor(Math.random()*T.length));go();});
+  start.querySelector('button').addEventListener('click',function(){V.unlock();S.unlock();start.hidden=true;setTheme(Math.floor(Math.random()*T.length));go();});
+  document.addEventListener('visibilitychange',function(){if(document.hidden){if(playing)stop();}});
+})();
 
 // Fruit Maths: count the fruit, then pick the right number.
 (function(){
@@ -777,7 +914,7 @@ JS_LANDS = r"""
 # ---------------- PRICES ----------------
 PRICES_CSS = r"""
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.plan{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:26px;display:grid;gap:12px;align-content:start;transition:transform .25s}.plan:hover{transform:translateY(-5px)}.plan.pop{border-color:var(--berry);box-shadow:0 10px 30px rgba(255,95,162,.18)}.plan .tag{justify-self:start;background:var(--sun);color:#3B2357;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px}.plan h3{font-size:24px}.plan .em{font-size:40px;line-height:1}.price{font-family:var(--display);font-size:40px;font-weight:700;font-variant-numeric:tabular-nums}.price small{font-size:16px;font-weight:500;color:var(--muted)}.plan ul{margin:0;padding-left:20px;color:var(--muted)}
-.incl{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.incl div{background:#fff;border:2px solid var(--line);border-radius:20px;padding:16px;text-align:center}.incl .ic{font-size:32px;display:block}.incl b{font-family:var(--display);font-size:18px}
+.incl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.incl div{background:#fff;border:2px solid var(--line);border-radius:20px;padding:16px;text-align:center}.incl .ic{font-size:32px;display:block}.incl b{font-family:var(--display);font-size:18px}
 .extras{display:grid;grid-template-columns:1fr 1fr;gap:20px}.extras h3{font-size:22px;margin-bottom:8px}.extras table{width:100%;border-collapse:collapse}.extras td{padding:8px 0;border-bottom:1px dashed var(--line)}.extras td:last-child{text-align:right;font-family:var(--display);font-weight:700;font-variant-numeric:tabular-nums}
 .faq{max-width:800px;margin:0 auto;display:grid;gap:12px}.faq details{background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 18px}.faq summary{cursor:pointer;font-family:var(--display);font-weight:600;font-size:19px}.faq p{color:var(--muted);margin-top:8px}
 @media (max-width:820px){.pgrid,.extras{grid-template-columns:1fr}.incl{grid-template-columns:repeat(2,1fr)}}
@@ -806,6 +943,7 @@ PRICES_HTML = """
   <h2>Every plan includes</h2>
   <p class="sub">Games, songs, spelling and maths are unlimited. There are never any ads.</p>
   <div class="incl">
+    <div><span class="ic" aria-hidden="true">🎉</span><b>Catch Party</b></div>
     <div><span class="ic" aria-hidden="true">🍎</span><b>Fruit Maths</b></div>
     <div><span class="ic" aria-hidden="true">🔤</span><b>Read &amp; Spell</b></div>
     <div><span class="ic" aria-hidden="true">🎵</span><b>12 songs</b></div>
@@ -868,7 +1006,7 @@ HOW_HTML = """
   <div class="s2"><div class="n" aria-hidden="true">🏰</div><div><h3>4. Pick a land</h3><p>Choose one of <a href="/fantasy-lands/" style="text-decoration:underline">54 fantasy lands</a>, from a sunny Aussie beach to outer space. Then watch your toy wake up inside it.</p>
     <div class="shot"><img src="/wp-content/uploads/2026/11/imaloo-shot-dolphin-underwater.jpg" alt="A toy dolphin underwater" loading="lazy"><img src="/wp-content/uploads/2026/11/imaloo-shot-cow-farm.jpg" alt="A toy cow on the farm" loading="lazy"></div></div></div>
   <div class="s2"><div class="n" aria-hidden="true">📺</div><div><h3>5. Watch it on the TV</h3><p>Everything you make is kept in the Library. Open a movie and send it to your TV to watch together on the big screen.</p></div></div>
-  <div class="s2"><div class="n" aria-hidden="true">🎮</div><div><h3>6. Play and learn</h3><p>Tap Maths, Spell or Songs. Children pick their age (🐣 1-3, 🐥 3-4 or 🦁 4-5) and the games grow with them. <a href="/games/" style="text-decoration:underline">Try the games here</a>.</p></div></div>
+  <div class="s2"><div class="n" aria-hidden="true">🎮</div><div><h3>6. Play and learn</h3><p>Tap Catch Party, Maths, Spell or Songs. Children pick their age (🐣 1-3, 🐥 3-4 or 🦁 4-5) and the games grow with them. <a href="/games/" style="text-decoration:underline">Try the games here</a>.</p></div></div>
   <div class="s2"><div class="n" aria-hidden="true">👪</div><div><h3>7. The Parents page</h3><p>Behind a grown-ups question, so little fingers can't get in. Here you can:</p><ul><li>See your plan and how many movies and pictures are left</li><li>Choose who can add toys, make movies or delete things</li><li>Set a daily play time</li><li>Change or cancel your plan, or delete your account</li></ul></div></div>
 </div></div></section>
 
