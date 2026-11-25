@@ -47,15 +47,40 @@ footer{background:linear-gradient(180deg,#F4EEFF,#FFE7F3);padding-block:36px;col
 .conf{position:absolute;width:10px;height:14px;border-radius:3px;pointer-events:none;z-index:6;animation:conf 1.3s ease-out forwards}
 @keyframes conf{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
 @media (max-width:820px){.band .floaty{display:none}.band{padding-block:40px 60px}}
-@media (prefers-reduced-motion:reduce){.band .floaty,.menu a:hover .e{animation:none}}
+
+/* Phone menu: a big Menu button that opens colourful page buttons */
+.menubtn{display:none;flex:none;margin-left:auto;font-family:var(--display);font-weight:700;font-size:18px;color:var(--grape);background:#fff;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.pmenu{position:fixed;inset:0;z-index:80;background:linear-gradient(160deg,#8B5CF6,#C86BFF 50%,#FF7EB6);padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.pmenu .ptop{display:flex;align-items:center;justify-content:space-between}
+.pmenu .ptop b{font-family:var(--display);font-size:26px;color:#fff;letter-spacing:.04em}
+.pmenu .close{font-family:var(--display);font-weight:700;font-size:18px;border:0;border-radius:999px;padding:9px 18px;background:#fff;color:var(--grape);cursor:pointer}
+.pgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pgrid2 a{display:grid;place-items:center;gap:4px;text-align:center;background:#fff;border-radius:24px;padding:18px 8px;font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink);box-shadow:0 6px 0 rgba(59,35,87,.18);animation:popin .35s ease both}
+.pgrid2 a .big{font-size:40px;line-height:1}
+.pgrid2 a[aria-current="page"]{outline:4px solid #FFE45C}
+.pgrid2 a:nth-child(2){animation-delay:.04s}.pgrid2 a:nth-child(3){animation-delay:.08s}.pgrid2 a:nth-child(4){animation-delay:.12s}.pgrid2 a:nth-child(5){animation-delay:.16s}.pgrid2 a:nth-child(6){animation-delay:.2s}.pgrid2 a:nth-child(7){animation-delay:.24s}
+.pmenu .pact{display:grid;gap:10px;margin-top:4px}.pmenu .pact .btn{justify-content:center}
+@keyframes popin{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+body.menu-open{overflow:hidden}
+/* "Next page" card at the bottom of every page */
+.nextpage{display:flex;justify-content:center;padding:8px 16px 40px}
+.nextpage a{display:flex;align-items:center;gap:14px;background:#fff;border:3px solid var(--line);border-radius:24px;padding:14px 22px;font-family:var(--display);font-weight:700;font-size:20px;color:var(--ink);box-shadow:0 8px 20px rgba(139,92,246,.12);transition:transform .2s}
+.nextpage a:hover{transform:translateY(-3px)}.nextpage .big{font-size:34px}.nextpage small{display:block;font-size:14px;color:var(--muted);font-weight:600}
+@media (max-width:820px){.menu{display:none}.menubtn{display:inline-flex}.top .signin{display:none}.top .wrap{flex-wrap:nowrap}
+  .sec{padding-block:44px}.cta{padding-block:40px}h2{font-size:clamp(26px,7vw,34px)}body{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.pgrid2 a{animation:none}.band .floaty,.menu a:hover .e{animation:none}}
 """
 
 def nav(cur):
     items = [('/', '🏠', 'Home'), ('/games/', '🎮', 'Games'), ('/books/', '📚', 'Books'), ('/fantasy-lands/', '🏰', 'Fantasy Lands'),
              ('/prices/', '⭐', 'Prices'), ('/how-it-works/', '🧸', 'How it works'), ('/safety/', '🛡️', 'Safety')]
     links = ''.join('<a href="%s"%s><span class="e" aria-hidden="true">%s</span> %s</a>' % (h, ' aria-current="page"' if h == cur else '', e, t) for h, e, t in items)
+    tiles = ''.join('<a href="%s"%s><span class="big" aria-hidden="true">%s</span>%s</a>' % (h, ' aria-current="page"' if h == cur else '', e, t) for h, e, t in items)
     return ('<canvas id="sprinkles" aria-hidden="true"></canvas>\n<header class="top"><div class="wrap">\n  <a class="logo" href="/">IMALOO</a>\n'
-            '  <nav class="menu" aria-label="Pages">%s</nav>\n  <a class="btn btn-soft signin" href="https://app.imaloo.com.au">Sign in</a>\n</div></header>\n' % links)
+            '  <nav class="menu" aria-label="Pages">%s</nav>\n  <a class="btn btn-soft signin" href="https://app.imaloo.com.au">Sign in</a>\n'
+            '  <button class="menubtn" type="button" id="menubtn" aria-expanded="false" aria-controls="pmenu">☰ Menu</button>\n</div></header>\n'
+            '<div class="pmenu" id="pmenu" hidden role="dialog" aria-modal="true" aria-label="Pages">\n  <div class="ptop"><b>IMALOO</b><button class="close" type="button" id="pmenu-x">✕ Close</button></div>\n'
+            '  <nav class="pgrid2" aria-label="Pages">%s</nav>\n  <div class="pact"><a class="btn btn-main" href="https://app.imaloo.com.au">Start your 7-day free trial</a><a class="btn btn-soft" href="https://app.imaloo.com.au">Sign in</a></div>\n</div>\n' % (links, tiles))
 
 FOOTER = """
 <footer><div class="wrap">
@@ -80,6 +105,20 @@ TRIAL = """
 RULE = """// IMPORTANT for anyone editing this script inside WordPress: never type two ampersands, and never put a
 // "less than" sign straight before a letter. WordPress rewrites those and the whole script stops working.
 // Use nested ifs and write comparisons the other way round (pages.length-1 > i).
+"""
+
+JS_MENU = r"""
+// Phone menu: the Menu button opens big page buttons; Close, Escape or tapping a page shuts it.
+(function(){
+  var b=document.getElementById('menubtn'),m=document.getElementById('pmenu'),x=document.getElementById('pmenu-x');
+  if(!b)return;if(!m)return;
+  function open(){m.hidden=false;b.setAttribute('aria-expanded','true');document.body.classList.add('menu-open');x.focus();}
+  function shut(){m.hidden=true;b.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open');}
+  b.addEventListener('click',function(e){e.stopPropagation();open();});
+  x.addEventListener('click',function(e){e.stopPropagation();shut();});
+  m.addEventListener('click',function(e){e.stopPropagation();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+})();
 """
 
 JS_SPRINKLES = r"""
@@ -404,7 +443,7 @@ GAMES_CSS = r"""
 .note{position:absolute;z-index:1;bottom:-30px;font-size:30px;animation:rise 4s linear forwards;pointer-events:none}
 @keyframes rise{to{transform:translateY(-420px) rotate(30deg);opacity:0}}
 .stopbar{position:relative;z-index:2;text-align:center;padding-bottom:16px}
-@media (max-width:820px){.game,.game.alt{grid-template-columns:1fr;gap:24px;padding-block:40px}.game.alt .phone{order:0}.phone{width:200px;margin:0 auto}.gtext h2{text-align:center}.gtext .lead{text-align:center}}
+@media (max-width:820px){.game,.game.alt{grid-template-columns:1fr;gap:24px;padding-block:40px}.phone{display:none}.gtext h2{text-align:center}.gtext .lead{text-align:center}}
 """
 
 def games_html():
@@ -1066,8 +1105,12 @@ SAFE_HTML = """
 </div></section>
 """ + TRIAL
 
+NEXT = {'/': ('/games/', '🎮', 'Games'), '/games/': ('/books/', '📚', 'Books'), '/books/': ('/fantasy-lands/', '🏰', 'Fantasy Lands'),
+        '/fantasy-lands/': ('/prices/', '⭐', 'Prices'), '/prices/': ('/how-it-works/', '🧸', 'How it works'), '/how-it-works/': ('/safety/', '🛡️', 'Safety'), '/safety/': ('/', '🏠', 'Home')}
 def page(cur, css, body, js):
-    html = FONTS + '\n<style>' + CSS + css + '</style>\n<div class="imaloo-page">\n' + nav(cur) + body + FOOTER + '</div>\n<script>\n' + RULE + js + JS_SPRINKLES + '</script>'
+    h, e, t = NEXT[cur]
+    nxt = '\n<div class="nextpage"><a href="%s"><span class="big" aria-hidden="true">%s</span><span><small>Next page</small>%s ▶</span></a></div>\n' % (h, e, t)
+    html = FONTS + '\n<style>' + CSS + css + '</style>\n<div class="imaloo-page">\n' + nav(cur) + body + nxt + FOOTER + '</div>\n<script>\n' + RULE + JS_MENU + js + JS_SPRINKLES + '</script>'
     # Safety check for the WordPress script rule
     for m in re.finditer(r'<script>(.*?)</script>', html, re.S):
         sc = m.group(1)
