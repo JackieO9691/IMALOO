@@ -1,0 +1,138 @@
+<!-- wp:html -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+/* IMALOO website. Each page keeps everything in one block: styles, page and scripts.
+   WordPress wrapper reset: the page fills the whole window, with no theme header, footer or side gaps. */
+.wp-site-blocks{padding:0!important}.wp-site-blocks>*,.wp-block-post-content>*{margin-block-start:0!important;margin-block-end:0!important;max-width:none!important}.wp-block-post-content,.entry-content{max-width:none!important;margin:0!important;padding:0!important}.imaloo-page h1,.imaloo-page h2,.imaloo-page h3{color:inherit;letter-spacing:normal;font-weight:700}.imaloo-page a{text-decoration:none}.imaloo-page footer a,.imaloo-page .ul a{text-decoration:underline}
+/* Colours: bright pinks, purples and sky blue. No green. */
+:root{--sun:#FFC94D;--berry:#FF5FA2;--sky:#4FB8FF;--grape:#8B5CF6;--bg:#FFF8FD;--band:#F4EEFF;--card:#FFFFFF;--ink:#3B2357;--muted:#76628F;--line:#EBDDFB;--display:"Fredoka","Baloo 2","Trebuchet MS",system-ui,sans-serif;--body:"Nunito","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;overflow-x:hidden}img{max-width:100%}[hidden]{display:none!important}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}h2{font-size:clamp(28px,4vw,40px)}p{margin:0}a{color:inherit}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:600;font-size:19px;text-decoration:none;border-radius:999px;padding:14px 28px;border:0;cursor:pointer}
+.btn-main{background:linear-gradient(135deg,#FF5FA2,#FF8A5B);color:#fff;box-shadow:0 5px 0 #C2367A}.btn-main:hover{transform:translateY(-1px)}.btn-soft{background:rgba(255,255,255,.94);color:#3B2357}.btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+/* Top menu: on every page */
+.top{position:sticky;top:0;z-index:30;background:linear-gradient(90deg,#8B5CF6,#C86BFF 50%,#FF7EB6);box-shadow:0 4px 18px rgba(139,92,246,.25)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.logo{font-family:var(--display);font-weight:700;font-size:26px;color:#fff;letter-spacing:.04em;text-shadow:0 2px 8px rgba(0,0,0,.25);flex:none}
+.menu{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;justify-content:center}.menu::-webkit-scrollbar{display:none}
+.menu a{flex:none;font-family:var(--display);font-weight:600;font-size:16px;color:#fff;padding:7px 13px;border-radius:999px;white-space:nowrap;transition:background .2s,transform .2s}
+.menu a:hover{background:rgba(255,255,255,.2);transform:translateY(-2px)}.menu a[aria-current="page"]{background:#fff;color:var(--grape)}
+.menu a .e{display:inline-block}.menu a:hover .e{animation:bob .6s ease}
+.top .signin{flex:none;font-size:15px;padding:8px 16px}
+@keyframes bob{0%,100%{transform:translateY(0)}40%{transform:translateY(-5px) rotate(-8deg)}70%{transform:translateY(1px) rotate(5deg)}}
+@media (max-width:820px){.top .wrap{flex-wrap:wrap;gap:6px 10px;padding-block:8px}.logo{font-size:22px}.top .signin{margin-left:auto}.menu{order:3;flex-basis:100%;justify-content:flex-start;margin:0 -4px}.menu a{font-size:15px;padding:6px 11px}}
+/* Page header band for inner pages */
+.band{position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,#8B5CF6 0%,#C86BFF 45%,#FF7EB6 100%);padding-block:56px 72px;text-align:center}
+.band h1{font-size:clamp(34px,5vw,58px);text-shadow:0 3px 14px rgba(60,20,110,.35)}.band p{max-width:34em;margin:14px auto 0;font-size:clamp(17px,1.6vw,20px)}
+.band::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:40px;background:var(--bg);clip-path:ellipse(60% 100% at 50% 100%)}
+.band .floaty{position:absolute;font-size:clamp(28px,4vw,48px);animation:floaty 5s ease-in-out infinite;pointer-events:none}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-16px) rotate(6deg)}}
+section{scroll-margin-top:80px}.sec{padding-block:64px}.sec h2{text-align:center}.sec .sub{text-align:center;color:var(--muted);margin:10px auto 30px;max-width:36em}
+.tint{background:linear-gradient(180deg,#F4EEFF,#FFEFF7)}
+.cta{text-align:center;display:grid;gap:14px;justify-items:center;padding-block:56px}.cta p{color:var(--muted)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:24px;box-shadow:0 8px 24px rgba(139,92,246,.08)}
+footer{background:linear-gradient(180deg,#F4EEFF,#FFE7F3);padding-block:36px;color:var(--muted);font-size:15px}footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
+/* Fairy sprinkles drifting over the page */
+#sprinkles{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+/* Confetti for the little games */
+.conf{position:absolute;width:10px;height:14px;border-radius:3px;pointer-events:none;z-index:6;animation:conf 1.3s ease-out forwards}
+@keyframes conf{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+@media (max-width:820px){.band .floaty{display:none}.band{padding-block:40px 60px}}
+@media (prefers-reduced-motion:reduce){.band .floaty,.menu a:hover .e{animation:none}}
+
+.promise{max-width:860px;margin:0 auto;background:linear-gradient(135deg,#4FB8FF,#8B5CF6);color:#fff;border-radius:30px;padding:clamp(24px,4vw,44px);box-shadow:0 18px 50px rgba(79,184,255,.25)}
+.promise blockquote{margin:0 0 14px;font-family:var(--display);font-size:clamp(24px,3.4vw,34px);line-height:1.25}.promise p{margin-top:12px}
+.keeps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.keep{display:grid;gap:8px;align-content:start}.keep .ic{font-size:38px;line-height:1}.keep h3{font-size:21px}.keep p{color:var(--muted)}
+.links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+@media (max-width:820px){.keeps{grid-template-columns:1fr}}
+</style>
+<div class="imaloo-page">
+<canvas id="sprinkles" aria-hidden="true"></canvas>
+<header class="top"><div class="wrap">
+  <a class="logo" href="/">IMALOO</a>
+  <nav class="menu" aria-label="Pages"><a href="/"><span class="e" aria-hidden="true">🏠</span> Home</a><a href="/games/"><span class="e" aria-hidden="true">🎮</span> Games</a><a href="/books/"><span class="e" aria-hidden="true">📚</span> Books</a><a href="/fantasy-lands/"><span class="e" aria-hidden="true">🏰</span> Fantasy Lands</a><a href="/prices/"><span class="e" aria-hidden="true">⭐</span> Prices</a><a href="/how-it-works/"><span class="e" aria-hidden="true">🧸</span> How it works</a><a href="/safety/" aria-current="page"><span class="e" aria-hidden="true">🛡️</span> Safety</a></nav>
+  <a class="btn btn-soft signin" href="https://app.imaloo.com.au">Sign in</a>
+</div></header>
+
+<section class="band">
+  <span class="floaty" style="left:8%;top:28%" aria-hidden="true">🛡️</span><span class="floaty" style="right:8%;top:24%;animation-delay:1.5s" aria-hidden="true">💖</span><span class="floaty" style="left:16%;bottom:24%;animation-delay:2.8s" aria-hidden="true">🧸</span>
+  <h1>🛡️ Safe, private and kind</h1>
+  <p>IMALOO is made for little children, so safety is built into every part of it.</p>
+</section>
+
+<section class="sec"><div class="wrap">
+  <div class="promise">
+    <blockquote>Imaloo — where toys come to life and childhood stays innocent.</blockquote>
+    <p>Imaloo is designed for children to enjoy imaginative, age-appropriate adventures with their favourite toys. Our content rules strictly prohibit pornography, nudity, sexual content, violence, gore, and abusive or disturbing scenes.</p>
+    <p>Only photographs of toys are permitted. Photos of real people, magazine pictures, screenshots, and other non-toy images are not allowed. Attempts to bring these images to life or create sexual, violent, or harmful content are prohibited.</p>
+    <p>Our commitment is to keep Imaloo a place for playful storytelling, creativity, and childhood wonder.</p>
+  </div>
+</div></section>
+
+<section class="sec tint"><div class="wrap">
+  <h2>How we keep children safe</h2>
+  <p class="sub">Nothing scary, no weapons, and toys only ever share hugs and high-fives.</p>
+  <div class="keeps">
+    <div class="card keep"><span class="ic" aria-hidden="true">🧸</span><h3>Toy photos only</h3><p>Every photo is checked before it is saved. Photos of people, screens and magazines are refused and never kept.</p></div>
+    <div class="card keep"><span class="ic" aria-hidden="true">🔍</span><h3>Everything is checked</h3><p>Every picture and movie is checked again before your child sees it. If something isn't right, it's thrown away.</p></div>
+    <div class="card keep"><span class="ic" aria-hidden="true">⌨️</span><h3>Children never type</h3><p>Little ones choose with picture buttons, so they can't type anything into IMALOO.</p></div>
+    <div class="card keep"><span class="ic" aria-hidden="true">🔒</span><h3>Private to your family</h3><p>Nobody else can see your family's toys, photos, pictures or movies.</p></div>
+    <div class="card keep"><span class="ic" aria-hidden="true">🚫</span><h3>No ads, ever</h3><p>IMALOO never shows ads to children.</p></div>
+    <div class="card keep"><span class="ic" aria-hidden="true">👪</span><h3>Grown-ups in charge</h3><p>Choose who can add toys, make movies or delete things, set a daily play time, and delete your account whenever you like.</p></div>
+  </div>
+  <div class="links">
+    <a class="btn btn-soft" style="border:2px solid var(--line)" href="https://app.imaloo.com.au/safety">Read our full Safety Promise</a>
+    <a class="btn btn-soft" style="border:2px solid var(--line)" href="https://app.imaloo.com.au/privacy">Privacy policy</a>
+  </div>
+  <p class="sub" style="margin-top:20px;margin-bottom:0">Questions about safety or privacy? Email <a href="mailto:support@imaloo.com.au" style="text-decoration:underline">support@imaloo.com.au</a>.</p>
+</div></section>
+
+<div class="cta wrap">
+  <a class="btn btn-main" href="https://app.imaloo.com.au">Start your 7-day free trial</a>
+  <p>No card needed for the trial. Made in Australia.</p>
+</div>
+
+<footer><div class="wrap">
+  <span>© 2026 IMALOO, by Ambience Care WA Pty Ltd</span>
+  <nav>
+    <a href="/how-it-works/">How it works</a>
+    <a href="/prices/">Prices</a>
+    <a href="/safety/">Safety</a>
+    <a href="https://app.imaloo.com.au/privacy">Privacy</a>
+    <span>Help: <a href="mailto:support@imaloo.com.au">support@imaloo.com.au</a></span>
+  </nav>
+</div></footer>
+</div>
+<script>
+// IMPORTANT for anyone editing this script inside WordPress: never type two ampersands, and never put a
+// "less than" sign straight before a letter. WordPress rewrites those and the whole script stops working.
+// Use nested ifs and write comparisons the other way round (pages.length-1 > i).
+
+// Fairy sprinkles: little golden, pink and white sparkles drifting gently down the page.
+(function(){
+  var c=document.getElementById('sprinkles');if(!c)return;if(!c.getContext)return;
+  var g=c.getContext('2d'),W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2),bits=[];
+  var calm=false;if(window.matchMedia){calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}
+  var colours=['#FFD86B','#FF8FC7','#FFFFFF','#C9A8FF','#8FE3FF'];
+  function size(){W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;g.setTransform(dpr,0,0,dpr,0,0);}
+  function make(top){return {x:Math.random()*W,y:top?-10:Math.random()*H,r:1+Math.random()*2.6,vy:.25+Math.random()*.6,vx:(Math.random()-.5)*.35,t:Math.random()*6.28,col:colours[Math.floor(Math.random()*colours.length)],star:(.35>Math.random())};}
+  function star(x,y,r){g.beginPath();for(var k=0;8>k;k++){var a=k*Math.PI/4,rr=k%2?r*.4:r*1.9;g.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);}g.closePath();g.fill();}
+  size();window.addEventListener('resize',size);
+  var count=Math.round(Math.min(70,W/18));for(var k=0;count>k;k++)bits.push(make(false));
+  function frame(){
+    g.clearRect(0,0,W,H);
+    for(var k=0;bits.length>k;k++){var b=bits[k];
+      if(!calm){b.y+=b.vy;b.x+=b.vx+Math.sin(b.t)*.2;b.t+=.03;}
+      if(b.y>H+10||-10>b.x||b.x>W+10)bits[k]=b=make(true);
+      g.globalAlpha=.55+.45*Math.sin(b.t*2);g.fillStyle=b.col;g.shadowColor=b.col;g.shadowBlur=6;
+      if(b.star)star(b.x,b.y,b.r);else{g.beginPath();g.arc(b.x,b.y,b.r,0,6.283);g.fill();}
+    }
+    g.globalAlpha=1;g.shadowBlur=0;
+    if(!calm)requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+<!-- /wp:html -->
