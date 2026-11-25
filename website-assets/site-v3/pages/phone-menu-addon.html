@@ -1,0 +1,73 @@
+<!-- wp:html -->
+<style>
+/* IMALOO phone menu add-on (lives in the imaloo-full-page template, so every page gets it) */
+.menubtn{display:none;flex:none;margin-left:auto;font-family:var(--display);font-weight:700;font-size:18px;color:var(--grape);background:#fff;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.pmenu{position:fixed;inset:0;z-index:80;background:linear-gradient(160deg,#8B5CF6,#C86BFF 50%,#FF7EB6);padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.pmenu[hidden]{display:none}
+.pmenu .ptop{display:flex;align-items:center;justify-content:space-between}
+.pmenu .ptop b{font-family:var(--display);font-size:26px;color:#fff;letter-spacing:.04em}
+.pmenu .close{font-family:var(--display);font-weight:700;font-size:18px;border:0;border-radius:999px;padding:9px 18px;background:#fff;color:var(--grape);cursor:pointer}
+.pgrid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pgrid2 a{display:grid;place-items:center;gap:4px;text-align:center;background:#fff;border-radius:24px;padding:18px 8px;font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink);text-decoration:none;box-shadow:0 6px 0 rgba(59,35,87,.18);animation:popin .35s ease both}
+.pgrid2 a .big{font-size:40px;line-height:1}
+.pgrid2 a[aria-current="page"]{outline:4px solid #FFE45C}
+.pgrid2 a:nth-child(2){animation-delay:.04s}.pgrid2 a:nth-child(3){animation-delay:.08s}.pgrid2 a:nth-child(4){animation-delay:.12s}.pgrid2 a:nth-child(5){animation-delay:.16s}.pgrid2 a:nth-child(6){animation-delay:.2s}.pgrid2 a:nth-child(7){animation-delay:.24s}
+.pmenu .pact{display:grid;gap:10px;margin-top:4px}.pmenu .pact .btn{justify-content:center}
+@keyframes popin{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
+body.menu-open{overflow:hidden}
+.nextpage{display:flex;justify-content:center;padding:8px 16px 40px}
+.nextpage a{display:flex;align-items:center;gap:14px;background:#fff;border:3px solid var(--line);border-radius:24px;padding:14px 22px;font-family:var(--display);font-weight:700;font-size:20px;color:var(--ink);text-decoration:none;box-shadow:0 8px 20px rgba(139,92,246,.12);transition:transform .2s}
+.nextpage a:hover{transform:translateY(-3px)}.nextpage .big{font-size:34px}.nextpage small{display:block;font-size:14px;color:var(--muted);font-weight:600}
+@media (max-width:820px){.menu{display:none !important}.menubtn{display:inline-flex}.top .signin{display:none !important}.top .wrap{flex-wrap:nowrap}
+  .sec{padding-block:44px}.cta{padding-block:40px}h2{font-size:clamp(26px,7vw,34px)}.imaloo-page{font-size:16px}
+  .game .phone,.game.alt .phone{display:none}}
+@media (prefers-reduced-motion:reduce){.pgrid2 a{animation:none}}
+</style>
+<script>
+// IMPORTANT for anyone editing this script inside WordPress: never type two ampersands, and never put a less-than sign straight before a letter.
+// Phone menu add-on: adds a big Menu button with page buttons, and a "Next page" card at the bottom of each page.
+(function(){
+  if(document.getElementById('menubtn'))return;
+  var wrap=document.querySelector('.imaloo-page .top .wrap');
+  if(!wrap)return;
+  var pages=[['/','🏠','Home'],['/games/','🎮','Games'],['/books/','📚','Books'],['/fantasy-lands/','🏰','Fantasy Lands'],['/prices/','⭐','Prices'],['/how-it-works/','🧸','How it works'],['/safety/','🛡️','Safety']];
+  var path=location.pathname;
+  if(path.charAt(path.length-1)!=='/')path=path+'/';
+  var cur=0;
+  for(var i=0;pages.length>i;i++){if(pages[i][0]===path)cur=i;}
+  if(path==='/welcome/')cur=0;
+  function el(tag,cls,text){var e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e;}
+  var b=el('button','menubtn','☰ Menu');b.type='button';b.id='menubtn';b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','pmenu');
+  wrap.appendChild(b);
+  var m=el('div','pmenu');m.id='pmenu';m.hidden=true;m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-label','Pages');
+  var top=el('div','ptop');top.appendChild(el('b','','IMALOO'));
+  var x=el('button','close','✕ Close');x.type='button';x.id='pmenu-x';top.appendChild(x);m.appendChild(top);
+  var grid=el('nav','pgrid2');grid.setAttribute('aria-label','Pages');
+  for(var j=0;pages.length>j;j++){
+    var a=el('a');a.href=pages[j][0];if(j===cur)a.setAttribute('aria-current','page');
+    var s=el('span','big',pages[j][1]);s.setAttribute('aria-hidden','true');a.appendChild(s);a.appendChild(document.createTextNode(pages[j][2]));grid.appendChild(a);
+  }
+  m.appendChild(grid);
+  var act=el('div','pact');
+  var t1=el('a','btn btn-main','Start your 7-day free trial');t1.href='https://app.imaloo.com.au';act.appendChild(t1);
+  var t2=el('a','btn btn-soft','Sign in');t2.href='https://app.imaloo.com.au';act.appendChild(t2);
+  m.appendChild(act);
+  var host=document.querySelector('.imaloo-page');
+  host.insertBefore(m,host.querySelector('.top').nextSibling);
+  function open(){m.hidden=false;b.setAttribute('aria-expanded','true');document.body.classList.add('menu-open');x.focus();}
+  function shut(){m.hidden=true;b.setAttribute('aria-expanded','false');document.body.classList.remove('menu-open');}
+  b.addEventListener('click',function(e){e.stopPropagation();open();});
+  x.addEventListener('click',function(e){e.stopPropagation();shut();});
+  m.addEventListener('click',function(e){e.stopPropagation();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut();});
+  if(!document.querySelector('.nextpage')){
+    var n=pages[(cur+1)%pages.length];
+    var box=el('div','nextpage');var na=el('a');na.href=n[0];
+    var nb=el('span','big',n[1]);nb.setAttribute('aria-hidden','true');na.appendChild(nb);
+    var nt=el('span');nt.appendChild(el('small','','Next page'));nt.appendChild(document.createTextNode(n[2]+' ▶'));na.appendChild(nt);box.appendChild(na);
+    var foot=host.querySelector('footer');
+    if(foot)host.insertBefore(box,foot);else host.appendChild(box);
+  }
+})();
+</script>
+<!-- /wp:html -->
